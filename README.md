@@ -20,34 +20,6 @@ Os usuários podem registrar materiais recicláveis, acompanhar sua pontuação,
 
 ---
 
-## 📦 Instalação
-
-Clone o repositório:
-
-```bash
-git clone <url-do-repositorio>
-```
-
-Acesse a pasta do projeto:
-
-```bash
-cd frontend
-```
-
-Instale as dependências:
-
-```bash
-npm install
-```
-
-Execute a aplicação:
-
-```bash
-npm run dev
-```
-
----
-
 ## 📁 Estrutura do projeto
 
 ```text
