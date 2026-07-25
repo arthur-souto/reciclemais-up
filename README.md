@@ -10,13 +10,20 @@ Os usuários podem registrar materiais recicláveis, acompanhar sua pontuação,
 
 ## 🚀 Tecnologias
 
-- React
+- React + Vite
 - TypeScript
-- Vite
 - Tailwind CSS
-- React Router
-- Leaflet
+- shadcn/ui (Radix)
 - Lucide React
+- Recharts
+- Leaflet + react-leaflet
+- Axios
+- TanStack Query (React Query)
+- React Hook Form + Zod
+- React Router
+- Deploy: Vercel ou Netlify
+
+> Detalhes e justificativas de cada escolha em [docs/stack.md](docs/stack.md).
 
 ---
 
