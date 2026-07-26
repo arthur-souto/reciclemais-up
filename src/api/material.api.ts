@@ -1,5 +1,11 @@
 import { api } from './axios'
-import type { ApiItemResponse, ApiListResponse, ApiMessageResponse, ApiMutationResponse } from '@/types/api'
+import type {
+  ApiItemResponse,
+  ApiListResponse,
+  ApiMessageResponse,
+  ApiMutationResponse,
+  PaginationParams,
+} from '@/types/api'
 import type { CreateMaterialPayload, Material, UpdateMaterialPayload } from '@/types/material'
 
 export async function createMaterial(payload: CreateMaterialPayload) {
@@ -7,9 +13,23 @@ export async function createMaterial(payload: CreateMaterialPayload) {
   return data.data
 }
 
-export async function getMaterials() {
-  const { data } = await api.get<ApiListResponse<Material>>('/materials')
-  return data.payload
+export async function getMaterials(params?: PaginationParams) {
+  const { data } = await api.get<ApiListResponse<Material>>('/materials', { params })
+  return data
+}
+
+export async function searchMaterialsByTarget(target: string, page = 1, limit = 10) {
+  const trimmedTarget = target.trim()
+  const { data } = await api.get<ApiListResponse<Material>>('/materials/search', {
+    params: {
+      page,
+      limit,
+      // Omitir "target" quando vazio faz o backend tratar como listagem completa;
+      // enviar "target=" vazio faz o backend retornar zero resultados.
+      ...(trimmedTarget ? { target: trimmedTarget } : {}),
+    },
+  })
+  return data
 }
 
 export async function getMaterialById(id: number) {

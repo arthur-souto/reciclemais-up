@@ -4,8 +4,21 @@ export interface ApiErrorResponse {
   dataHora: string
 }
 
+export interface PaginationParams {
+  page?: number
+  limit?: number
+}
+
+export interface PaginationMeta {
+  total: number
+  page: number
+  limit: number
+  totalPages: number
+}
+
 export interface ApiListResponse<T> {
   payload: T[]
+  meta: PaginationMeta
 }
 
 export interface ApiItemResponse<T> {

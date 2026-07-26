@@ -1,5 +1,11 @@
 import { api } from './axios'
-import type { ApiItemResponse, ApiListResponse, ApiMessageResponse, ApiMutationResponse } from '@/types/api'
+import type {
+  ApiItemResponse,
+  ApiListResponse,
+  ApiMessageResponse,
+  ApiMutationResponse,
+  PaginationParams,
+} from '@/types/api'
 import type { CreatePrizePayload, Prize, UpdatePrizePayload } from '@/types/prize'
 
 export async function createPrize(payload: CreatePrizePayload) {
@@ -7,9 +13,9 @@ export async function createPrize(payload: CreatePrizePayload) {
   return data.data
 }
 
-export async function getPrizes() {
-  const { data } = await api.get<ApiListResponse<Prize>>('/prizes')
-  return data.payload
+export async function getPrizes(params?: PaginationParams) {
+  const { data } = await api.get<ApiListResponse<Prize>>('/prizes', { params })
+  return data
 }
 
 export async function getPrizeById(id: number) {

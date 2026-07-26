@@ -3,6 +3,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { toast } from 'sonner'
 import { Recycle } from 'lucide-react'
+import loginBackground from '@/assets/login-background.jpg'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -36,10 +37,7 @@ export default function Login() {
       <div
         aria-hidden="true"
         className="absolute inset-0 bg-cover bg-center"
-        style={{
-          backgroundImage:
-            "url('https://images.pexels.com/photos/19507080/pexels-photo-19507080.jpeg')",
-        }}
+        style={{ backgroundImage: `url(${loginBackground})` }}
       />
       <div aria-hidden="true" className="absolute inset-0 bg-black/50" />
 

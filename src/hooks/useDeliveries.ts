@@ -1,16 +1,18 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { createDelivery, deleteDelivery, getDeliveryById, getDeliveries, updateDelivery } from '@/api/delivery.api'
 import type { CreateDeliveryPayload, UpdateDeliveryPayload } from '@/types/delivery'
+import type { PaginationParams } from '@/types/api'
 
 export const deliveryKeys = {
   all: ['deliveries'] as const,
+  list: (params: PaginationParams) => [...deliveryKeys.all, 'list', params] as const,
   detail: (id: number) => [...deliveryKeys.all, id] as const,
 }
 
-export function useDeliveries() {
+export function useDeliveries(params: PaginationParams = {}) {
   return useQuery({
-    queryKey: deliveryKeys.all,
-    queryFn: getDeliveries,
+    queryKey: deliveryKeys.list(params),
+    queryFn: () => getDeliveries(params),
   })
 }
 

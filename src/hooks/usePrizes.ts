@@ -1,16 +1,18 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { createPrize, deletePrize, getPrizeById, getPrizes, updatePrize } from '@/api/prize.api'
 import type { CreatePrizePayload, UpdatePrizePayload } from '@/types/prize'
+import type { PaginationParams } from '@/types/api'
 
 export const prizeKeys = {
   all: ['prizes'] as const,
+  list: (params: PaginationParams) => [...prizeKeys.all, 'list', params] as const,
   detail: (id: number) => [...prizeKeys.all, id] as const,
 }
 
-export function usePrizes() {
+export function usePrizes(params: PaginationParams = {}) {
   return useQuery({
-    queryKey: prizeKeys.all,
-    queryFn: getPrizes,
+    queryKey: prizeKeys.list(params),
+    queryFn: () => getPrizes(params),
   })
 }
 

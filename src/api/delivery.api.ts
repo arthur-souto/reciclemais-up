@@ -1,5 +1,11 @@
 import { api } from './axios'
-import type { ApiItemResponse, ApiListResponse, ApiMessageResponse, ApiMutationResponse } from '@/types/api'
+import type {
+  ApiItemResponse,
+  ApiListResponse,
+  ApiMessageResponse,
+  ApiMutationResponse,
+  PaginationParams,
+} from '@/types/api'
 import type { CreateDeliveryPayload, Delivery, UpdateDeliveryPayload } from '@/types/delivery'
 
 export async function createDelivery(payload: CreateDeliveryPayload) {
@@ -7,9 +13,9 @@ export async function createDelivery(payload: CreateDeliveryPayload) {
   return data.data
 }
 
-export async function getDeliveries() {
-  const { data } = await api.get<ApiListResponse<Delivery>>('/deliveries')
-  return data.payload
+export async function getDeliveries(params?: PaginationParams) {
+  const { data } = await api.get<ApiListResponse<Delivery>>('/deliveries', { params })
+  return data
 }
 
 export async function getDeliveryById(id: number) {

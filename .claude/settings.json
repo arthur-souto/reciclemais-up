@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx shadcn@latest add --help)",
+      "Bash(docker exec *)",
+      "Bash(grep -rln \"totalPages\\\\|meta\" /home/arthur/build-to-learn/reciclemais/reciclemais-bff-web/src | grep -v __tests__)",
+      "Read(//home/arthur/build-to-learn/reciclemais/reciclemais-bff-web/src/**)",
+      "Read(//home/arthur/build-to-learn/reciclemais/reciclemais-bff-web/src/domain/dto/**)",
+      "Read(//home/arthur/build-to-learn/reciclemais/reciclemais-bff-web/src/adapters/in/http/utils/**)",
+      "Bash(grep -n \"target\\\\|findAll\\\\|meta\\\\|payload\" /home/arthur/build-to-learn/reciclemais/reciclemais-bff-web/src/adapters/in/http/controller/MaterialController.ts /home/arthur/build-to-learn/reciclemais/reciclemais-bff-web/src/adapters/in/http/route/material.routes.ts)",
+      "Read(//home/arthur/build-to-learn/reciclemais/reciclemais-bff-web/src/adapters/in/http/controller/**)",
+      "Read(//home/arthur/build-to-learn/reciclemais/reciclemais-bff-web/src/adapters/in/http/route/**)",
+      "Bash(grep -n \"parsePagination\\\\|paginatedPayload\\\\|findAll\" /home/arthur/build-to-learn/reciclemais/reciclemais-bff-web/src/adapters/in/http/controller/DeliveryController.ts /home/arthur/build-to-learn/reciclemais/reciclemais-bff-web/src/adapters/in/http/controller/PrizeController.ts 2>/dev/null)",
+      "Bash(grep -n \"@name ChevronLeft$\\\\|@name ChevronRight$\" /home/arthur/build-to-learn/reciclemais/reciclemais-up/node_modules/lucide-react/dist/lucide-react.d.ts)",
+      "Bash(npx tsc *)",
+      "Bash(echo \"TSC EXIT: $?\")",
+      "Bash(npx oxlint *)"
+    ]
+  }
+}
