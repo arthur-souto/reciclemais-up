@@ -7,11 +7,14 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { getApiErrorMessage } from '@/api/axios'
 import { useCreateMaterial, useUpdateMaterial } from '@/hooks/useMaterials'
-import type { Material } from '@/types/material'
+import { Importance, type Material } from '@/types/material'
+
 
 const materialSchema = z.object({
   name: z.string().min(1, 'Informe o nome do material').max(255, 'Nome muito longo'),
-  importance: z.coerce.number('Informe um número').int('Deve ser um número inteiro').min(1, 'Mínimo 1'),
+  importance: z.union([
+    z.literal(Importance.EXTREMELY_LOW.value), z.literal(Importance.VERY_LOW.value), z.literal(Importance.LOW.value), z.literal(Importance.MEDIUM.value), z.literal(Importance.LOW_IMPORTANCE.value), z.literal(Importance.IMPORTANT.value), z.literal(Importance.VERY_IMPORTANT.value),
+  ], "Selecione uma das opções mostradas"),
   points_value: z.coerce.number('Informe um número').int('Deve ser um número inteiro').min(0, 'Mínimo 0'),
 })
 
@@ -63,6 +66,9 @@ export function MaterialForm({ material, onSaved }: MaterialFormProps) {
       },
       onError: (error) => toast.error(getApiErrorMessage(error, 'Não foi possível criar o material.')),
     })
+
+    
+    
   }
 
   return (
@@ -80,14 +86,24 @@ export function MaterialForm({ material, onSaved }: MaterialFormProps) {
 
       <div className="flex flex-col gap-1.5">
         <Label htmlFor="importance">Importância</Label>
-        <Input
+        <select
           id="importance"
-          type="number"
-          min={1}
-          step={1}
+          className="h-10 rounded-md border border-input bg-background px-3 py-2 text-sm"
           aria-invalid={!!errors.importance}
-          {...register('importance')}
-        />
+          {...register("importance", {
+            setValueAs: (value) => Number(value),
+          })}
+        >
+          <option value="">Selecione a importância</option>
+          <option value={Importance.EXTREMELY_LOW.value}>Extremamente baixa</option>
+          <option value={Importance.VERY_LOW.value}>Muito baixa</option>
+          <option value={Importance.LOW.value}>Baixa</option>
+          <option value={Importance.MEDIUM.value}>Mediana</option>
+          <option value={Importance.LOW_IMPORTANCE.value}>Pouco Importante</option>
+          <option value={Importance.IMPORTANT.value}>Importante</option>
+          <option value={Importance.VERY_IMPORTANT.value}>Muito Importante</option>
+        </select>
+
         {errors.importance && (
           <span className="text-xs text-destructive">{errors.importance.message}</span>
         )}
