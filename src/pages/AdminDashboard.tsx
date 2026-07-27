@@ -5,6 +5,7 @@ import { EmptyState } from '@/components/EmptyState'
 import { AdminSidebar, type AdminSection } from '@/components/admin/AdminSidebar'
 import { MaterialsSection } from '@/components/admin/MaterialsSection'
 import { ProfileSwitcher, type ProfileView } from '@/components/ProfileSwitcher'
+import { ThemeToggle } from '@/components/ThemeToggle'
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
 import { useLogout } from '@/hooks/useAuth'
 
@@ -33,6 +34,7 @@ export function AdminDashboard({ view, onViewChange }: AdminDashboardProps) {
           </div>
           <div className="flex items-center gap-3">
             <ProfileSwitcher value={view} onChange={onViewChange} />
+            <ThemeToggle />
             <Button variant="ghost" size="sm" onClick={logout}>
               <LogOut />
               Sair

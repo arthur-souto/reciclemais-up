@@ -8,13 +8,14 @@ import { EmptyState } from '@/components/EmptyState'
 import { ErrorState } from '@/components/ErrorState'
 import { Pagination } from '@/components/Pagination'
 import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-} from '@/components/ui/sheet'
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog'
 import { MaterialForm } from '@/components/admin/MaterialForm'
+import { ImportanceBadge } from '@/components/ImportanceBadge'
 import { getApiErrorMessage } from '@/api/axios'
 import { useDeleteMaterial, useMaterialsSearch } from '@/hooks/useMaterials'
 import { useUser } from '@/hooks/useUsers'
@@ -159,7 +160,9 @@ export function MaterialsSection() {
               {materials.map((material) => (
                 <tr key={material.id} className="border-b border-border last:border-0">
                   <td className="px-3 py-2 text-foreground">{material.name}</td>
-                  <td className="px-3 py-2 text-foreground">{material.importance}</td>
+                  <td className="px-3 py-2 text-foreground">
+                    <ImportanceBadge importance={material.importance} />
+                  </td>
                   <td className="px-3 py-2 text-foreground">{material.points_value}</td>
                   <td className="px-3 py-2 text-foreground">
                     <MaterialCreator userId={material.fk_user} />
@@ -195,19 +198,19 @@ export function MaterialsSection() {
         <Pagination meta={meta} onPageChange={setPage} disabled={isLoading} />
       )}
 
-      <Sheet open={isFormOpen} onOpenChange={setIsFormOpen}>
-        <SheetContent>
-          <SheetHeader>
-            <SheetTitle>{editingMaterial ? 'Editar material' : 'Novo material'}</SheetTitle>
-            <SheetDescription>
+      <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>{editingMaterial ? 'Editar material' : 'Novo material'}</DialogTitle>
+            <DialogDescription>
               {editingMaterial
                 ? 'Atualize as informações do material selecionado.'
                 : 'Preencha os dados para cadastrar um novo material.'}
-            </SheetDescription>
-          </SheetHeader>
+            </DialogDescription>
+          </DialogHeader>
           <MaterialForm material={editingMaterial} onSaved={() => setIsFormOpen(false)} />
-        </SheetContent>
-      </Sheet>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

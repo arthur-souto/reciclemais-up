@@ -1,8 +1,15 @@
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { registerEvidence } from '@/api/evidence.api'
+import { deliveryKeys } from '@/hooks/useDeliveries'
 
 export function useRegisterEvidence() {
+  const queryClient = useQueryClient()
+
   return useMutation({
-    mutationFn: (file: File) => registerEvidence(file),
+    mutationFn: ({ deliveryId, file }: { deliveryId: number; file: File }) =>
+      registerEvidence(deliveryId, file),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: deliveryKeys.all })
+    },
   })
 }

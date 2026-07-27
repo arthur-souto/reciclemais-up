@@ -1,13 +1,15 @@
-import { useForm } from 'react-hook-form'
+import { Controller, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { cn } from '@/lib/utils'
 import { getApiErrorMessage } from '@/api/axios'
 import { useCreateMaterial, useUpdateMaterial } from '@/hooks/useMaterials'
-import { Importance, type Material } from '@/types/material'
+import { IMPORTANCE_TIERS } from '@/components/ImportanceBadge'
+import { BASE_POINTS_BY_IMPORTANCE, Importance, type Material } from '@/types/material'
 
 
 const materialSchema = z.object({
@@ -31,20 +33,28 @@ export function MaterialForm({ material, onSaved }: MaterialFormProps) {
   const createMaterial = useCreateMaterial()
   const updateMaterial = useUpdateMaterial(material?.id ?? 0)
 
+  const defaultImportance = material?.importance ?? Importance.EXTREMELY_LOW.value
+
   const {
     register,
     handleSubmit,
+    control,
+    setValue,
+    watch,
     formState: { errors },
   } = useForm<MaterialFormInput, unknown, MaterialFormOutput>({
     resolver: zodResolver(materialSchema),
     defaultValues: {
       name: material?.name ?? '',
-      importance: material?.importance ?? 1,
-      points_value: material?.points_value ?? 0,
+      importance: defaultImportance,
+      points_value: material?.points_value ?? BASE_POINTS_BY_IMPORTANCE[defaultImportance],
     },
   })
 
   const isPending = createMaterial.isPending || updateMaterial.isPending
+  const currentImportance = watch('importance')
+  const suggestedPoints =
+    typeof currentImportance === 'number' ? BASE_POINTS_BY_IMPORTANCE[currentImportance] : undefined
 
   function onSubmit(values: MaterialFormOutput) {
     if (isEditing) {
@@ -72,7 +82,7 @@ export function MaterialForm({ material, onSaved }: MaterialFormProps) {
   }
 
   return (
-    <form className="flex flex-col gap-4 px-4 pb-4" onSubmit={handleSubmit(onSubmit)} noValidate>
+    <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)} noValidate>
       <div className="flex flex-col gap-1.5">
         <Label htmlFor="name">Nome</Label>
         <Input
@@ -86,23 +96,39 @@ export function MaterialForm({ material, onSaved }: MaterialFormProps) {
 
       <div className="flex flex-col gap-1.5">
         <Label htmlFor="importance">Importância</Label>
-        <select
-          id="importance"
-          className="h-10 rounded-md border border-input bg-background px-3 py-2 text-sm"
-          aria-invalid={!!errors.importance}
-          {...register("importance", {
-            setValueAs: (value) => Number(value),
-          })}
-        >
-          <option value="">Selecione a importância</option>
-          <option value={Importance.EXTREMELY_LOW.value}>Extremamente baixa</option>
-          <option value={Importance.VERY_LOW.value}>Muito baixa</option>
-          <option value={Importance.LOW.value}>Baixa</option>
-          <option value={Importance.MEDIUM.value}>Mediana</option>
-          <option value={Importance.LOW_IMPORTANCE.value}>Pouco Importante</option>
-          <option value={Importance.IMPORTANT.value}>Importante</option>
-          <option value={Importance.VERY_IMPORTANT.value}>Muito Importante</option>
-        </select>
+        <Controller
+          name="importance"
+          control={control}
+          render={({ field }) => (
+            <div id="importance" role="radiogroup" aria-label="Importância" className="flex flex-wrap gap-1.5">
+              {IMPORTANCE_TIERS.map((tier) => {
+                const isSelected = field.value === tier.value
+
+                return (
+                  <button
+                    key={tier.value}
+                    type="button"
+                    role="radio"
+                    aria-checked={isSelected}
+                    onClick={() => {
+                      field.onChange(tier.value)
+                      setValue('points_value', BASE_POINTS_BY_IMPORTANCE[tier.value])
+                    }}
+                    className={cn(
+                      'rounded-full px-2.5 py-1 text-xs font-medium ring-1 ring-inset ring-transparent transition-opacity',
+                      tier.className,
+                      isSelected
+                        ? 'ring-foreground/50'
+                        : 'opacity-50 hover:opacity-80',
+                    )}
+                  >
+                    {tier.label}
+                  </button>
+                )
+              })}
+            </div>
+          )}
+        />
 
         {errors.importance && (
           <span className="text-xs text-destructive">{errors.importance.message}</span>
@@ -119,8 +145,14 @@ export function MaterialForm({ material, onSaved }: MaterialFormProps) {
           aria-invalid={!!errors.points_value}
           {...register('points_value')}
         />
-        {errors.points_value && (
+        {errors.points_value ? (
           <span className="text-xs text-destructive">{errors.points_value.message}</span>
+        ) : (
+          suggestedPoints != null && (
+            <span className="text-xs text-muted-foreground">
+              Sugestão para esta importância: {suggestedPoints} pontos. Você pode ajustar livremente.
+            </span>
+          )
         )}
       </div>
 

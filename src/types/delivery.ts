@@ -1,3 +1,5 @@
+import type { Material } from './material'
+
 export type DeliveryStatus = 'PENDING' | 'COMPLETED' | 'CANCELED'
 
 export interface Delivery {
@@ -9,6 +11,7 @@ export interface Delivery {
   evidence_url: string | null
   fk_user: string | null
   fk_material: number | null
+  material: Material | null
 }
 
 export interface CreateDeliveryPayload {

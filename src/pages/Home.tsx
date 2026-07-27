@@ -1,9 +1,10 @@
 import { useState, type ReactNode } from 'react'
-import { LogOut, Recycle, Sparkles } from 'lucide-react'
+import { LogOut, Recycle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { EmptyState } from '@/components/EmptyState'
 import { ProfileSwitcher, type ProfileView } from '@/components/ProfileSwitcher'
+import { ThemeToggle } from '@/components/ThemeToggle'
 import { AdminDashboard } from '@/pages/AdminDashboard'
+import { DeliveriesSection } from '@/components/deliveries/DeliveriesSection'
 import { useAuthContext } from '@/context/AuthContext'
 import { useLogout } from '@/hooks/useAuth'
 
@@ -25,6 +26,8 @@ export default function Home() {
 
 function PersonalHome({ switcher }: { switcher?: ReactNode }) {
   const logout = useLogout()
+  const { user } = useAuthContext()
+  const firstName = user?.name?.split(' ')[0]
 
   return (
     <div className="min-h-svh bg-background">
@@ -37,6 +40,7 @@ function PersonalHome({ switcher }: { switcher?: ReactNode }) {
         </div>
         <div className="flex items-center gap-3">
           {switcher}
+          <ThemeToggle />
           <Button variant="ghost" size="sm" onClick={logout}>
             <LogOut />
             Sair
@@ -44,24 +48,14 @@ function PersonalHome({ switcher }: { switcher?: ReactNode }) {
         </div>
       </header>
 
-      <main className="mx-auto flex max-w-3xl flex-col items-center gap-8 px-6 py-16 text-center">
-        <div className="flex size-14 items-center justify-center rounded-2xl bg-accent text-accent-foreground">
-          <Sparkles className="size-7" />
-        </div>
+      <div className="mx-auto flex w-full max-w-5xl flex-col gap-1 px-6 pt-10 pb-6">
+        <h1 className="text-2xl font-semibold text-foreground">
+          Bem-vindo(a) de volta{firstName ? `, ${firstName}` : ''}!
+        </h1>
+        <p className="text-muted-foreground">Que bom ter você por aqui. Este é o seu espaço no Recicle+.</p>
+      </div>
 
-        <div className="flex flex-col gap-2">
-          <h1 className="text-3xl font-semibold text-foreground">Bem-vindo(a) de volta!</h1>
-          <p className="text-muted-foreground">
-            Que bom ter você por aqui. Este é o seu espaço no Recicle+.
-          </p>
-        </div>
-
-        <EmptyState
-          mensagem="Estamos preparando novidades para você. Em breve, este espaço vai ganhar vida."
-          icon={Sparkles}
-          className="w-full"
-        />
-      </main>
+      <DeliveriesSection />
     </div>
   )
 }
