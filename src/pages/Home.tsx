@@ -31,7 +31,7 @@ function PersonalHome({ switcher }: { switcher?: ReactNode }) {
 
   return (
     <div className="min-h-svh bg-background">
-      <header className="flex items-center justify-between border-b border-border px-6 py-4">
+      <header className="sticky top-0 z-10 flex items-center justify-between border-b border-border bg-background px-6 py-4">
         <div className="flex items-center gap-2">
           <div className="flex size-9 items-center justify-center rounded-lg bg-primary text-primary-foreground">
             <Recycle className="size-5" />

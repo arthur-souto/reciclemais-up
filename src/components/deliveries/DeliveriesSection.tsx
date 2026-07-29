@@ -15,6 +15,7 @@ import {
 import { DeliveryCard } from '@/components/deliveries/DeliveryCard'
 import { CreateDeliveryForm } from '@/components/deliveries/CreateDeliveryForm'
 import { EvidenceUploadSheet } from '@/components/deliveries/EvidenceUploadSheet'
+import { DeliveryDetailsDialog } from '@/components/deliveries/DeliveryDetailsDialog'
 import { useDeliveries } from '@/hooks/useDeliveries'
 import type { Delivery } from '@/types/delivery'
 
@@ -28,6 +29,7 @@ export function DeliveriesSection() {
 
   const [isCreateOpen, setIsCreateOpen] = useState(false)
   const [evidenceTarget, setEvidenceTarget] = useState<Delivery | null>(null)
+  const [detailsTarget, setDetailsTarget] = useState<Delivery | null>(null)
 
   useEffect(() => {
     if (meta && meta.totalPages > 0 && page > meta.totalPages) {
@@ -51,7 +53,7 @@ export function DeliveriesSection() {
       </div>
 
       {isLoading && (
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {Array.from({ length: PAGE_SIZE }).map((_, index) => (
             <Skeleton key={index} className="aspect-square w-full" />
           ))}
@@ -70,9 +72,14 @@ export function DeliveriesSection() {
       )}
 
       {!isLoading && !isError && deliveries != null && deliveries.length > 0 && (
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {deliveries.map((delivery) => (
-            <DeliveryCard key={delivery.id} delivery={delivery} onUploadEvidence={setEvidenceTarget} />
+            <DeliveryCard
+              key={delivery.id}
+              delivery={delivery}
+              onUploadEvidence={setEvidenceTarget}
+              onOpenDetails={setDetailsTarget}
+            />
           ))}
         </div>
       )}
@@ -82,7 +89,7 @@ export function DeliveriesSection() {
       )}
 
       <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
-        <DialogContent className="sm:max-w-md">
+        <DialogContent className="max-h-[85vh] overflow-y-auto sm:max-w-md">
           <DialogHeader>
             <DialogTitle>Nova entrega</DialogTitle>
             <DialogDescription>Registre uma nova entrega de material reciclável.</DialogDescription>
@@ -110,6 +117,11 @@ export function DeliveriesSection() {
           )}
         </DialogContent>
       </Dialog>
+
+      <DeliveryDetailsDialog
+        delivery={detailsTarget}
+        onOpenChange={(open) => !open && setDetailsTarget(null)}
+      />
     </section>
   )
 }
