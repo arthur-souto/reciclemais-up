@@ -38,7 +38,7 @@ export function DeliveriesSection() {
   }, [meta, page])
 
   return (
-    <section className="mx-auto flex w-full max-w-5xl flex-col gap-4 px-6 pb-16">
+    <section className="flex w-full flex-col gap-4 px-6 pt-8 pb-16 sm:px-8 lg:px-12">
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-xl font-semibold text-foreground">Entregas</h2>
@@ -53,7 +53,7 @@ export function DeliveriesSection() {
       </div>
 
       {isLoading && (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
           {Array.from({ length: PAGE_SIZE }).map((_, index) => (
             <Skeleton key={index} className="aspect-square w-full" />
           ))}
@@ -72,7 +72,7 @@ export function DeliveriesSection() {
       )}
 
       {!isLoading && !isError && deliveries != null && deliveries.length > 0 && (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
           {deliveries.map((delivery) => (
             <DeliveryCard
               key={delivery.id}

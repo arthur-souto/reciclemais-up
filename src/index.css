@@ -17,3 +17,50 @@
     @apply font-sans;
     }
 }
+
+.map-user-marker {
+  position: relative;
+  width: 18px;
+  height: 18px;
+}
+
+.map-user-marker-pulse {
+  position: absolute;
+  inset: -6px;
+  border-radius: 9999px;
+  background: rgba(59, 130, 246, 0.6);
+  animation: map-user-pulse 2s ease-out infinite;
+}
+
+.map-user-marker-dot {
+  position: absolute;
+  inset: 3px;
+  border-radius: 9999px;
+  background: #3b82f6;
+  border: 2px solid white;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15);
+}
+
+@keyframes map-user-pulse {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(1.8);
+    opacity: 0;
+  }
+}
+
+.map-recycling-marker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 9999px;
+  background: #16a34a;
+  border: 2px solid white;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+  font-size: 16px;
+}

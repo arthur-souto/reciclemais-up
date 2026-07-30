@@ -3,6 +3,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { toast } from 'sonner'
 import { Recycle } from 'lucide-react'
+import { Link } from 'react-router-dom'
 import loginBackground from '@/assets/login-background.jpg'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -100,6 +101,13 @@ export default function Login() {
             Entrar
           </Button>
         </form>
+
+        <p className="mt-4 text-center text-sm text-white/70">
+          Não tem conta?{' '}
+          <Link to="/register" className="font-medium text-white hover:underline">
+            Cadastre-se
+          </Link>
+        </p>
       </div>
     </main>
   )

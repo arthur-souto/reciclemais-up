@@ -1,6 +1,9 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import Login from '@/pages/Login'
+import Register from '@/pages/Register'
 import Home from '@/pages/Home'
+import Profile from '@/pages/Profile'
+import Locations from '@/pages/Locations'
 import { ProtectedRoute } from '@/components/ProtectedRoute'
 import { PublicRoute } from '@/components/PublicRoute'
 
@@ -16,10 +19,34 @@ function App() {
         }
       />
       <Route
+        path="/register"
+        element={
+          <PublicRoute>
+            <Register />
+          </PublicRoute>
+        }
+      />
+      <Route
         path="/"
         element={
           <ProtectedRoute>
             <Home />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/profile"
+        element={
+          <ProtectedRoute>
+            <Profile />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/pontos-de-coleta"
+        element={
+          <ProtectedRoute>
+            <Locations />
           </ProtectedRoute>
         }
       />

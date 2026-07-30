@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { toast } from 'sonner'
-import { ArrowLeft, ArrowRight, MapPin } from 'lucide-react'
+import { ArrowLeft, ArrowRight, MapPin, Trophy } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -29,9 +29,9 @@ const deliverySchema = z.object({
   latitude: z.coerce.number('Escolha um ponto no mapa'),
   longitude: z.coerce.number('Escolha um ponto no mapa'),
   collected_at: z
-    .string()
-    .optional()
-    .transform((value) => (value ? new Date(value).getTime() : undefined)),
+    .string('Informe a data da coleta')
+    .min(1, 'Informe a data da coleta')
+    .transform((value) => new Date(value).getTime()),
 })
 
 type DeliveryFormInput = z.input<typeof deliverySchema>
@@ -103,6 +103,7 @@ export function CreateDeliveryForm({ onSaved }: CreateDeliveryFormProps) {
 
   const selectedMaterialId = watch('fk_material')
   const quantity = watch('quantity')
+  const totalScore = watch('total_score')
   const local = watch('local')
   const latitude = watch('latitude')
   const longitude = watch('longitude')
@@ -290,26 +291,33 @@ export function CreateDeliveryForm({ onSaved }: CreateDeliveryFormProps) {
 
           <div className="flex flex-col gap-1.5">
             <Label htmlFor="total_score">Pontuação</Label>
-            <Input
-              id="total_score"
-              type="number"
-              min={1}
-              step={1}
-              aria-invalid={!!errors.total_score}
-              {...register('total_score')}
-            />
+            <input type="hidden" id="total_score" {...register('total_score')} />
+            <div className="flex h-9 items-center gap-2 rounded-lg border border-input bg-muted/50 px-3 text-sm">
+              <Trophy className="size-4 shrink-0 text-amber-500" />
+              <span className="font-medium text-foreground">
+                {Number(totalScore) > 0 ? Number(totalScore) : 0} pontos
+              </span>
+            </div>
             {errors.total_score ? (
               <span className="text-xs text-destructive">{errors.total_score.message}</span>
             ) : (
               <span className="text-xs text-muted-foreground">
-                Sugestão com base no material e na quantidade. Você pode ajustar livremente.
+                Calculada automaticamente com base no material e na quantidade selecionados.
               </span>
             )}
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <Label htmlFor="collected_at">Data da coleta (opcional)</Label>
-            <Input id="collected_at" type="datetime-local" {...register('collected_at')} />
+            <Label htmlFor="collected_at">Data da coleta</Label>
+            <Input
+              id="collected_at"
+              type="date"
+              aria-invalid={!!errors.collected_at}
+              {...register('collected_at')}
+            />
+            {errors.collected_at && (
+              <span className="text-xs text-destructive">{errors.collected_at.message}</span>
+            )}
           </div>
 
           <Button

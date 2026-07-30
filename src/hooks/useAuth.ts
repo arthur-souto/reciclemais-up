@@ -1,8 +1,13 @@
 import { useMutation } from '@tanstack/react-query'
 import { login } from '@/api/auth.api'
-import { getUserByEmail } from '@/api/user.api'
+import { getUserById } from '@/api/user.api'
 import type { LoginPayload } from '@/types/auth'
 import { useAuthContext } from '@/context/AuthContext'
+import { decodeJwt } from '@/lib/jwt'
+
+interface AccessTokenPayload {
+  sub: string
+}
 
 export function useLogin() {
   const { login: setSession } = useAuthContext()
@@ -14,7 +19,12 @@ export function useLogin() {
       // estar salvo antes desta chamada autenticada, e não só em onSuccess.
       localStorage.setItem('accessToken', accessToken)
       try {
-        const user = await getUserByEmail(payload.email)
+        // Não existe endpoint /me: o id do usuário logado vem do claim "sub" do JWT.
+        const claims = decodeJwt<AccessTokenPayload>(accessToken)
+        if (!claims?.sub) {
+          throw new Error('Não foi possível identificar o usuário autenticado.')
+        }
+        const user = await getUserById(claims.sub)
         return { accessToken, user }
       } catch (error) {
         localStorage.removeItem('accessToken')

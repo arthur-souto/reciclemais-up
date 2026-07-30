@@ -34,7 +34,8 @@ export interface CreateDeliveryPayload {
   fk_material: number
   evidence_url?: string
   // Timestamp em ms (class-transformer aceita number ou string ISO e converte para Date).
-  collected_at?: number
+  // Obrigatório no frontend, embora o backend ainda aceite omitir esse campo.
+  collected_at: number
 }
 
 export interface UpdateDeliveryPayload {
