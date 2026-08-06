@@ -1,11 +1,11 @@
-import { useForm } from 'react-hook-form'
+import { Controller, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { UserAvatar } from '@/components/UserAvatar'
+import { ImageUploadField } from '@/components/ImageUploadField'
 import { getApiErrorMessage } from '@/api/axios'
 import { useUpdateUser } from '@/hooks/useUsers'
 import type { UpdateUserPayload, User } from '@/types/user'
@@ -51,7 +51,7 @@ export function EditProfileForm({ user, onSaved }: EditProfileFormProps) {
   const {
     register,
     handleSubmit,
-    watch,
+    control,
     formState: { errors },
   } = useForm<EditProfileForm>({
     resolver: zodResolver(editProfileSchema),
@@ -64,8 +64,6 @@ export function EditProfileForm({ user, onSaved }: EditProfileFormProps) {
       profile_image: user.profile_image ?? '',
     },
   })
-
-  const previewImage = watch('profile_image')
 
   function onSubmit(values: EditProfileForm) {
     const payload = buildUpdatePayload(values, user)
@@ -87,21 +85,18 @@ export function EditProfileForm({ user, onSaved }: EditProfileFormProps) {
   return (
     <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)} noValidate>
       <div className="flex flex-col items-center gap-2">
-        <UserAvatar
-          src={previewImage || user.profile_image}
-          seed={user.id ?? user.email}
-          alt={user.name}
-          className="size-16"
-        />
-      </div>
-
-      <div className="flex flex-col gap-1.5">
-        <Label htmlFor="profile_image">URL da imagem de perfil</Label>
-        <Input
-          id="profile_image"
-          placeholder="https://..."
-          aria-invalid={!!errors.profile_image}
-          {...register('profile_image')}
+        <Controller
+          name="profile_image"
+          control={control}
+          render={({ field }) => (
+            <ImageUploadField
+              id="profile_image"
+              value={field.value}
+              onChange={field.onChange}
+              shape="circle"
+              size={96}
+            />
+          )}
         />
         {errors.profile_image && (
           <span className="text-xs text-destructive">{errors.profile_image.message}</span>

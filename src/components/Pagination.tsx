@@ -14,7 +14,7 @@ export function Pagination({ meta, onPageChange, disabled = false }: PaginationP
   const canGoNext = page < totalPages && !disabled
 
   return (
-    <div className="flex items-center justify-between gap-4 text-sm text-muted-foreground">
+    <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 text-sm text-muted-foreground">
       <span>
         Página {page} de {Math.max(totalPages, 1)} · {total} {total === 1 ? 'item' : 'itens'}
       </span>

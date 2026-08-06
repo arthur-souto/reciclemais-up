@@ -1,21 +1,13 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import {
-  ArrowLeft,
-  CalendarDays,
-  LogOut,
-  Mail,
-  MapPin,
-  Pencil,
-  Phone,
-  Recycle,
-  Trophy,
-} from 'lucide-react'
+import { CalendarDays, Gift, Mail, MapPin, Pencil, Phone, Wallet } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
+import { EmptyState } from '@/components/EmptyState'
 import { ErrorState } from '@/components/ErrorState'
+import { Pagination } from '@/components/Pagination'
 import { UserAvatar } from '@/components/UserAvatar'
-import { ThemeToggle } from '@/components/ThemeToggle'
+import { AppLayout } from '@/components/app/AppLayout'
 import {
   Dialog,
   DialogContent,
@@ -24,42 +16,88 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { EditProfileForm } from '@/components/profile/EditProfileForm'
+import { RedemptionPrizeInfo } from '@/components/prizes/RedemptionPrizeInfo'
 import { useAuthContext } from '@/context/AuthContext'
-import { useLogout } from '@/hooks/useAuth'
 import { useUser } from '@/hooks/useUsers'
+import { useMyRedemptions } from '@/hooks/usePrizeRedemptions'
 import { formatCep, formatPhone } from '@/lib/format'
-import { formatDate } from '@/lib/date'
+import { formatDate, formatDateTime } from '@/lib/date'
+import type { AppSection } from '@/components/app/AppSidebar'
+
+const REDEMPTIONS_PAGE_SIZE = 5
+
+function RedeemedPrizesCard() {
+  const [page, setPage] = useState(1)
+  const { data, isLoading, isError, refetch } = useMyRedemptions({ page, limit: REDEMPTIONS_PAGE_SIZE })
+  const redemptions = data?.payload
+  const meta = data?.meta
+
+  useEffect(() => {
+    if (meta && meta.totalPages > 0 && page > meta.totalPages) {
+      setPage(meta.totalPages)
+    }
+  }, [meta, page])
+
+  return (
+    <div className="mt-6 rounded-xl border border-border bg-card p-6">
+      <h2 className="flex items-center gap-2 text-base font-semibold text-foreground">
+        <Gift className="size-5 text-primary" />
+        Prêmios resgatados
+      </h2>
+
+      <div className="mt-4 flex flex-col gap-3">
+        {isLoading && (
+          <div className="flex flex-col gap-2">
+            {Array.from({ length: 2 }).map((_, index) => (
+              <Skeleton key={index} className="h-12 w-full" />
+            ))}
+          </div>
+        )}
+
+        {!isLoading && isError && (
+          <ErrorState mensagem="Não foi possível carregar seus resgates." onRetry={() => refetch()} />
+        )}
+
+        {!isLoading && !isError && redemptions?.length === 0 && (
+          <EmptyState mensagem="Você ainda não resgatou nenhum prêmio." icon={Gift} />
+        )}
+
+        {!isLoading && !isError && redemptions != null && redemptions.length > 0 && (
+          <ul className="flex flex-col divide-y divide-border">
+            {redemptions.map((redemption) => (
+              <li key={redemption.id} className="flex items-center justify-between gap-3 py-3">
+                <span className="text-base text-foreground">
+                  <RedemptionPrizeInfo prizeId={redemption.fk_prize} />
+                </span>
+                <span className="shrink-0 text-sm text-muted-foreground">
+                  {formatDateTime(redemption.redeemed_at)}
+                </span>
+              </li>
+            ))}
+          </ul>
+        )}
+
+        {!isLoading && !isError && meta != null && meta.total > 0 && (
+          <Pagination meta={meta} onPageChange={setPage} disabled={isLoading} />
+        )}
+      </div>
+    </div>
+  )
+}
 
 export default function Profile() {
   const navigate = useNavigate()
-  const logout = useLogout()
   const { user: sessionUser } = useAuthContext()
   const { data: user, isLoading, isError, refetch } = useUser(sessionUser?.id ?? '')
   const [isEditOpen, setIsEditOpen] = useState(false)
 
   return (
-    <div className="min-h-svh w-full bg-background">
-      <header className="sticky top-0 z-10 flex items-center justify-between border-b border-border bg-background px-6 py-4 sm:px-8 lg:px-12">
-        <div className="flex items-center gap-2">
-          <Button variant="ghost" size="icon-sm" onClick={() => navigate('/')}>
-            <ArrowLeft />
-            <span className="sr-only">Voltar</span>
-          </Button>
-          <div className="flex size-9 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-            <Recycle className="size-5" />
-          </div>
-          <span className="text-lg font-semibold text-foreground">Recicle+</span>
-        </div>
-        <div className="flex items-center gap-3">
-          <ThemeToggle />
-          <Button variant="ghost" size="sm" onClick={logout}>
-            <LogOut />
-            Sair
-          </Button>
-        </div>
-      </header>
-
-      <main className="mx-auto w-full max-w-2xl px-6 py-10 sm:px-8">
+    <AppLayout
+      title="Meu perfil"
+      section="home"
+      onSectionChange={(next: AppSection) => navigate(`/?section=${next}`)}
+    >
+      <div className="mx-auto w-full max-w-2xl px-6 py-10 sm:px-8">
         {isLoading && (
           <div className="flex flex-col items-center gap-4">
             <Skeleton className="size-24 rounded-full" />
@@ -93,11 +131,13 @@ export default function Profile() {
 
             <div className="mt-8 rounded-xl border border-border bg-card p-6 text-center">
               <p className="flex items-center justify-center gap-2 text-sm font-medium text-muted-foreground">
-                <Trophy className="size-4 text-amber-500" />
+                <Wallet className="size-4 text-amber-500" />
                 Meus pontos
               </p>
               <p className="mt-1 text-4xl font-bold text-foreground">{user.total_score}</p>
             </div>
+
+            <RedeemedPrizesCard />
 
             <dl className="mt-6 flex flex-col divide-y divide-border rounded-xl border border-border">
               <div className="flex items-center gap-3 px-4 py-3">
@@ -144,7 +184,7 @@ export default function Profile() {
             </Dialog>
           </>
         )}
-      </main>
-    </div>
+      </div>
+    </AppLayout>
   )
 }

@@ -1,5 +1,7 @@
 import { useEffect } from 'react'
+import { renderToStaticMarkup } from 'react-dom/server'
 import { MapContainer, Marker, Popup, TileLayer, useMap } from 'react-leaflet'
+import { Recycle } from 'lucide-react'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import type { RecyclingCenter } from '@/lib/recyclingCenters'
@@ -18,7 +20,7 @@ const userLocationIcon = L.divIcon({
 
 const recyclingCenterIcon = L.divIcon({
   className: '',
-  html: `<div class="map-recycling-marker">♻️</div>`,
+  html: `<div class="map-recycling-marker">${renderToStaticMarkup(<Recycle size={18} color="white" strokeWidth={2.5} />)}</div>`,
   iconSize: [34, 34],
   iconAnchor: [17, 17],
   popupAnchor: [0, -17],

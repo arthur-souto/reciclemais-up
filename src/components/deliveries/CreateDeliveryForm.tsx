@@ -228,7 +228,7 @@ export function CreateDeliveryForm({ onSaved }: CreateDeliveryFormProps) {
             ) : (
               <select
                 id="fk_material"
-                className="h-10 rounded-md border border-input bg-background px-3 py-2 text-sm"
+                className="h-11 rounded-lg border border-input bg-background px-3.5 py-2 text-base"
                 aria-invalid={!!errors.fk_material}
                 {...register('fk_material', {
                   setValueAs: (value) => (value === '' ? undefined : Number(value)),
@@ -292,7 +292,7 @@ export function CreateDeliveryForm({ onSaved }: CreateDeliveryFormProps) {
           <div className="flex flex-col gap-1.5">
             <Label htmlFor="total_score">Pontuação</Label>
             <input type="hidden" id="total_score" {...register('total_score')} />
-            <div className="flex h-9 items-center gap-2 rounded-lg border border-input bg-muted/50 px-3 text-sm">
+            <div className="flex h-11 items-center gap-2 rounded-lg border border-input bg-muted/50 px-3.5 text-base">
               <Trophy className="size-4 shrink-0 text-amber-500" />
               <span className="font-medium text-foreground">
                 {Number(totalScore) > 0 ? Number(totalScore) : 0} pontos
@@ -312,6 +312,7 @@ export function CreateDeliveryForm({ onSaved }: CreateDeliveryFormProps) {
             <Input
               id="collected_at"
               type="date"
+              className='max-w-2xs'
               aria-invalid={!!errors.collected_at}
               {...register('collected_at')}
             />
@@ -346,9 +347,16 @@ export function CreateDeliveryForm({ onSaved }: CreateDeliveryFormProps) {
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
               <Label>Localização no mapa</Label>
-              <Button type="button" variant="outline" size="sm" onClick={handleUseLocation} loading={isLocating}>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={handleUseLocation}
+                loading={isLocating}
+                className="w-full sm:w-auto"
+              >
                 <MapPin />
                 Usar minha localização
               </Button>

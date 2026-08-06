@@ -39,18 +39,27 @@ export function DeliveriesSection() {
 
   return (
     <section className="flex w-full flex-col gap-4 px-6 pt-8 pb-16 sm:px-8 lg:px-12">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h2 className="text-xl font-semibold text-foreground">Entregas</h2>
           <p className="text-sm text-muted-foreground">
             Registre entregas de materiais recicláveis e envie evidências para ganhar pontos.
           </p>
         </div>
-        <Button size="sm" onClick={() => setIsCreateOpen(true)}>
+        <Button onClick={() => setIsCreateOpen(true)} className="w-full sm:w-auto">
           <Plus />
           Nova entrega
         </Button>
       </div>
+
+      <Button
+        size="icon-lg"
+        onClick={() => setIsCreateOpen(true)}
+        className="fixed bottom-6 right-6 z-20 rounded-full shadow-lg sm:hidden"
+        aria-label="Nova entrega"
+      >
+        <Plus />
+      </Button>
 
       {isLoading && (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">

@@ -86,15 +86,15 @@ export function MaterialsSection() {
   }
 
   return (
-    <div className="flex flex-col gap-4">
-      <div className="flex items-center justify-between">
+    <div className="flex min-w-0 flex-col gap-4">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h2 className="text-base font-semibold text-foreground">Materiais</h2>
           <p className="text-sm text-muted-foreground">
             Gerencie os materiais recicláveis disponíveis na plataforma.
           </p>
         </div>
-        <Button size="sm" onClick={openCreateForm}>
+        <Button size="sm" onClick={openCreateForm} className="w-full sm:w-auto">
           <Plus />
           Novo material
         </Button>
@@ -152,7 +152,7 @@ export function MaterialsSection() {
                 <th className="px-3 py-2 font-medium">Nome</th>
                 <th className="px-3 py-2 font-medium">Importância</th>
                 <th className="px-3 py-2 font-medium">Pontos por unidade</th>
-                <th className="px-3 py-2 font-medium">Criado por</th>
+                <th className="hidden px-3 py-2 font-medium sm:table-cell">Criado por</th>
                 <th className="px-3 py-2 font-medium text-right">Ações</th>
               </tr>
             </thead>
@@ -164,7 +164,7 @@ export function MaterialsSection() {
                     <ImportanceBadge importance={material.importance} />
                   </td>
                   <td className="px-3 py-2 text-foreground">{material.points_value}</td>
-                  <td className="px-3 py-2 text-foreground">
+                  <td className="hidden px-3 py-2 text-foreground sm:table-cell">
                     <MaterialCreator userId={material.fk_user} />
                   </td>
                   <td className="px-3 py-2">

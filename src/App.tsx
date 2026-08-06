@@ -4,6 +4,7 @@ import Register from '@/pages/Register'
 import Home from '@/pages/Home'
 import Profile from '@/pages/Profile'
 import Locations from '@/pages/Locations'
+import PrizesCatalogPage from '@/pages/PrizesCatalogPage'
 import { ProtectedRoute } from '@/components/ProtectedRoute'
 import { PublicRoute } from '@/components/PublicRoute'
 
@@ -47,6 +48,14 @@ function App() {
         element={
           <ProtectedRoute>
             <Locations />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/premios"
+        element={
+          <ProtectedRoute>
+            <PrizesCatalogPage />
           </ProtectedRoute>
         }
       />

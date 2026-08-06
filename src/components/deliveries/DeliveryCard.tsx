@@ -28,9 +28,9 @@ export function DeliveryCard({ delivery, onUploadEvidence, onOpenDetails }: Deli
           onOpenDetails(delivery)
         }
       }}
-      className="flex aspect-square cursor-pointer flex-col overflow-hidden rounded-xl border border-border bg-card text-left shadow-sm transition-shadow hover:shadow-md"
+      className="flex cursor-pointer flex-col overflow-hidden rounded-xl border border-border bg-card text-left shadow-sm transition-shadow hover:shadow-md"
     >
-      <div className="relative flex flex-1 items-center justify-center bg-muted">
+      <div className="relative flex aspect-square w-full shrink-0 items-center justify-center bg-muted">
         {hasValidImage ? (
           <img
             src={delivery.evidence_url ?? undefined}

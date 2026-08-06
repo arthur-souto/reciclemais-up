@@ -157,8 +157,8 @@ export function RecyclingCentersSection() {
                         className="flex flex-col gap-1 rounded-lg border border-border bg-card p-3 text-left transition-colors hover:border-primary/50 hover:bg-accent"
                       >
                         <div className="flex items-start gap-2">
-                          <span className="mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-full bg-green-100 text-sm dark:bg-green-500/15">
-                            ♻️
+                          <span className="mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-full bg-green-100 dark:bg-green-500/15">
+                            <Recycle className="size-3.5 text-green-700 dark:text-green-400" />
                           </span>
                           <div className="flex flex-col">
                             <span className="text-sm font-medium text-foreground">{center.name}</span>

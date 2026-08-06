@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom'
-import { Home as HomeIcon, LayoutDashboard, MapPin, Package, Recycle, UserRound } from 'lucide-react'
+import { Gift, Home as HomeIcon, LayoutDashboard, MapPin, Package, Recycle, UserRound } from 'lucide-react'
 import {
   Sidebar,
   SidebarContent,
@@ -10,18 +10,36 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from '@/components/ui/sidebar'
 
-export type AppSection = 'home' | 'overview' | 'materials'
+export type AppSection = 'home' | 'overview' | 'materials' | 'prizes'
 
 interface AppSidebarProps {
   section: AppSection
   onSectionChange: (section: AppSection) => void
-  isAdmin: boolean
+  canManageMaterials: boolean
+  canManagePrizes: boolean
 }
 
-export function AppSidebar({ section, onSectionChange, isAdmin }: AppSidebarProps) {
+export function AppSidebar({
+  section,
+  onSectionChange,
+  canManageMaterials,
+  canManagePrizes,
+}: AppSidebarProps) {
   const location = useLocation()
+  const isHome = location.pathname === '/'
+  const { isMobile, setOpenMobile } = useSidebar()
+
+  function closeMobileSidebar() {
+    if (isMobile) setOpenMobile(false)
+  }
+
+  function handleSectionChange(next: AppSection) {
+    onSectionChange(next)
+    closeMobileSidebar()
+  }
 
   return (
     <Sidebar side="left">
@@ -39,14 +57,14 @@ export function AppSidebar({ section, onSectionChange, isAdmin }: AppSidebarProp
           <SidebarGroupContent>
             <SidebarMenu>
               <SidebarMenuItem>
-                <SidebarMenuButton isActive={section === 'home'} onClick={() => onSectionChange('home')}>
+                <SidebarMenuButton isActive={isHome && section === 'home'} onClick={() => handleSectionChange('home')}>
                   <HomeIcon />
                   <span>Início</span>
                 </SidebarMenuButton>
               </SidebarMenuItem>
               <SidebarMenuItem>
                 <SidebarMenuButton asChild isActive={location.pathname === '/pontos-de-coleta'}>
-                  <Link to="/pontos-de-coleta">
+                  <Link to="/pontos-de-coleta" onClick={closeMobileSidebar}>
                     <MapPin />
                     <span>Pontos de coleta</span>
                   </Link>
@@ -54,9 +72,17 @@ export function AppSidebar({ section, onSectionChange, isAdmin }: AppSidebarProp
               </SidebarMenuItem>
               <SidebarMenuItem>
                 <SidebarMenuButton asChild isActive={location.pathname === '/profile'}>
-                  <Link to="/profile">
+                  <Link to="/profile" onClick={closeMobileSidebar}>
                     <UserRound />
                     <span>Meu perfil</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild isActive={location.pathname === '/premios'}>
+                  <Link to="/premios" onClick={closeMobileSidebar}>
+                    <Gift />
+                    <span>Loja de prêmios</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -64,29 +90,44 @@ export function AppSidebar({ section, onSectionChange, isAdmin }: AppSidebarProp
           </SidebarGroupContent>
         </SidebarGroup>
 
-        {isAdmin && (
+        {(canManageMaterials || canManagePrizes) && (
           <SidebarGroup>
             <SidebarGroupLabel>Administração</SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
-                <SidebarMenuItem>
-                  <SidebarMenuButton
-                    isActive={section === 'overview'}
-                    onClick={() => onSectionChange('overview')}
-                  >
-                    <LayoutDashboard />
-                    <span>Visão geral</span>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-                <SidebarMenuItem>
-                  <SidebarMenuButton
-                    isActive={section === 'materials'}
-                    onClick={() => onSectionChange('materials')}
-                  >
-                    <Package />
-                    <span>Materiais</span>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
+                {canManageMaterials && (
+                  <SidebarMenuItem>
+                    <SidebarMenuButton
+                      isActive={isHome && section === 'overview'}
+                      onClick={() => handleSectionChange('overview')}
+                    >
+                      <LayoutDashboard />
+                      <span>Visão geral</span>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                )}
+                {canManageMaterials && (
+                  <SidebarMenuItem>
+                    <SidebarMenuButton
+                      isActive={isHome && section === 'materials'}
+                      onClick={() => handleSectionChange('materials')}
+                    >
+                      <Package />
+                      <span>Materiais</span>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                )}
+                {canManagePrizes && (
+                  <SidebarMenuItem>
+                    <SidebarMenuButton
+                      isActive={isHome && section === 'prizes'}
+                      onClick={() => handleSectionChange('prizes')}
+                    >
+                      <Gift />
+                      <span>Prêmios</span>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                )}
               </SidebarMenu>
             </SidebarGroupContent>
           </SidebarGroup>
