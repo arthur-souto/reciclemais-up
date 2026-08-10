@@ -90,7 +90,7 @@ export function RecyclingCentersSection() {
     <section className="w-full px-6 pt-8 pb-10 sm:px-8 lg:px-12">
       <div className="flex items-center gap-2">
         <MapPinned className="size-5 text-primary" />
-        <h2 className="text-xl font-semibold text-foreground">Pontos de coleta perto de você</h2>
+        <h2 className="text-xl font-semibold text-primary">Pontos de coleta perto de você</h2>
       </div>
       <p className="mt-1 text-sm text-muted-foreground">
         Encontramos ecopontos e centros de reciclagem próximos usando sua localização.

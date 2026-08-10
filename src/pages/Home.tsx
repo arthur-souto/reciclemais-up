@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
-import { Link, useSearchParams } from 'react-router-dom'
-import { LayoutDashboard, MapPin, Moon, Package, Sun, Sunrise, Trophy } from 'lucide-react'
+import { useSearchParams } from 'react-router-dom'
+import { LayoutDashboard, Moon, Sun, Sunrise } from 'lucide-react'
 import { EmptyState } from '@/components/EmptyState'
 import { AppLayout } from '@/components/app/AppLayout'
 import { type AppSection } from '@/components/app/AppSidebar'
@@ -54,37 +54,45 @@ export default function Home() {
     <AppLayout title={SECTION_TITLES[section]} section={section} onSectionChange={handleSectionChange}>
       {section === 'home' && (
         <>
-          <div className="w-full border-b border-border/60 px-6 pt-14 pb-12 sm:px-8 lg:px-12">
-            <div className="flex items-center gap-2 text-sm font-semibold tracking-wide text-primary uppercase">
-              <GreetingIcon className="size-4" />
-              {getGreeting()}
-            </div>
-            <h1 className="mt-3 text-balance text-5xl font-extrabold tracking-tight text-foreground sm:text-6xl lg:text-7xl">
-              Bem-vindo(a) de volta{firstName ? `, ${firstName}` : ''}!
-            </h1>
-            <p className="mt-4 max-w-2xl text-xl text-muted-foreground">
-              Que bom ter você por aqui. Acompanhe suas entregas, ganhe pontos e encontre pontos de
-              coleta perto de você.
-            </p>
+         <div className="w-full border-b border-border/60 bg-hero px-4 pt-8 pb-8 sm:px-8 sm:pt-14 sm:pb-12 lg:px-12">
+  <div className="mx-auto flex max-w-7xl flex-col items-center gap-8 lg:flex-row lg:gap-12">
 
-            <div className="mt-6 flex flex-wrap gap-3">
-              <div className="flex items-center gap-2 rounded-full border border-border bg-background px-4 py-2">
-                <Package className="size-4 text-primary" />
-                <span className="text-sm font-medium text-foreground">Registre entregas</span>
-              </div>
-              <div className="flex items-center gap-2 rounded-full border border-border bg-background px-4 py-2">
-                <Trophy className="size-4 text-amber-500" />
-                <span className="text-sm font-medium text-foreground">Ganhe pontos</span>
-              </div>
-              <Link
-                to="/pontos-de-coleta"
-                className="flex items-center gap-2 rounded-full border border-border bg-background px-4 py-2 transition-colors hover:border-primary/50 hover:bg-accent"
-              >
-                <MapPin className="size-4 text-primary" />
-                <span className="text-sm font-medium text-foreground">Encontre pontos de coleta</span>
-              </Link>
-            </div>
-          </div>
+    {/* Texto */}
+    <div className="flex-1 text-center lg:text-left">
+      <div className="flex items-center justify-center gap-2 text-xs font-semibold uppercase tracking-wide text-hero-foreground-muted sm:justify-start sm:text-sm">
+        <GreetingIcon className="size-4" />
+        {getGreeting()} {firstName ? `, ${firstName}` : ''}
+      </div>
+
+      <h1 className="mt-4 text-3xl font-extrabold leading-[1.1] tracking-tight text-foreground sm:text-5xl lg:text-6xl">
+        Conecte-se.
+        <br />
+        Recicle.
+        <br />
+        <span className="text-primary">Transforme.</span>
+      </h1>
+
+      <p className="mt-4 text-base text-hero-foreground-muted sm:mt-5 sm:text-xl lg:max-w-xl">
+        Que bom ter você por aqui. Acompanhe suas entregas, ganhe pontos e
+        encontre pontos de coleta perto de você.
+      </p>
+
+      <div className="mt-6 flex flex-col gap-3 sm:mt-8 sm:flex-row sm:flex-wrap sm:justify-center lg:justify-start">
+        {/* seus botões — w-full no mobile, w-auto a partir do sm */}
+      </div>
+    </div>
+
+    {/* Imagem */}
+    <div className="flex flex-1 justify-center lg:justify-end">
+      <img
+        src="/illustration.png"
+        alt="Reciclagem"
+        className="w-full max-w-[220px] object-cover sm:max-w-sm lg:max-w-md"
+      />
+    </div>
+
+  </div>
+</div>
 
           <DeliveriesSection />
         </>

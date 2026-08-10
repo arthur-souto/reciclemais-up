@@ -12,11 +12,11 @@ export default function PrizesCatalogPage() {
       section="home"
       onSectionChange={(next: AppSection) => navigate(`/?section=${next}`)}
     >
-      <div className="w-full border-b border-border/60 px-6 pt-14 pb-12 sm:px-8 lg:px-12">
-        <h1 className="text-balance text-5xl font-extrabold tracking-tight text-foreground sm:text-6xl lg:text-7xl">
+      <div className="w-full border-b border-border/60 px-4 pt-8 pb-8 sm:px-8 sm:pt-14 sm:pb-12 lg:px-12">
+        <h1 className="text-balance text-3xl font-extrabold tracking-tight text-foreground sm:text-5xl lg:text-6xl xl:text-7xl">
           Loja de prêmios
         </h1>
-        <p className="mt-4 max-w-2xl text-xl text-muted-foreground">
+        <p className="mt-3 text-base text-muted-foreground sm:mt-4 sm:text-xl lg:max-w-2xl">
           Troque os pontos que você ganhou reciclando por prêmios.
         </p>
       </div>

@@ -25,7 +25,6 @@ import { formatDate, formatDateTime } from '@/lib/date'
 import type { AppSection } from '@/components/app/AppSidebar'
 
 const REDEMPTIONS_PAGE_SIZE = 5
-
 function RedeemedPrizesCard() {
   const [page, setPage] = useState(1)
   const { data, isLoading, isError, refetch } = useMyRedemptions({ page, limit: REDEMPTIONS_PAGE_SIZE })
@@ -39,7 +38,7 @@ function RedeemedPrizesCard() {
   }, [meta, page])
 
   return (
-    <div className="mt-6 rounded-xl border border-border bg-card p-6">
+    <div className="mt-6 rounded-xl border border-border bg-card p-4 sm:p-6">
       <h2 className="flex items-center gap-2 text-base font-semibold text-foreground">
         <Gift className="size-5 text-primary" />
         Prêmios resgatados
@@ -65,11 +64,11 @@ function RedeemedPrizesCard() {
         {!isLoading && !isError && redemptions != null && redemptions.length > 0 && (
           <ul className="flex flex-col divide-y divide-border">
             {redemptions.map((redemption) => (
-              <li key={redemption.id} className="flex items-center justify-between gap-3 py-3">
-                <span className="text-base text-foreground">
+              <li key={redemption.id} className="flex flex-col gap-1 py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
+                <span className="text-sm text-foreground sm:text-base">
                   <RedemptionPrizeInfo prizeId={redemption.fk_prize} />
                 </span>
-                <span className="shrink-0 text-sm text-muted-foreground">
+                <span className="shrink-0 text-xs text-muted-foreground sm:text-sm">
                   {formatDateTime(redemption.redeemed_at)}
                 </span>
               </li>
@@ -97,7 +96,7 @@ export default function Profile() {
       section="home"
       onSectionChange={(next: AppSection) => navigate(`/?section=${next}`)}
     >
-      <div className="mx-auto w-full max-w-2xl px-6 py-10 sm:px-8">
+      <div className="mx-auto w-full max-w-2xl px-4 py-6 sm:px-8 sm:py-10">
         {isLoading && (
           <div className="flex flex-col items-center gap-4">
             <Skeleton className="size-24 rounded-full" />
@@ -117,10 +116,10 @@ export default function Profile() {
                 src={user.profile_image}
                 seed={user.id ?? user.email}
                 alt={user.name}
-                className="size-24"
+                className="size-20 sm:size-24"
               />
               <div>
-                <h1 className="text-2xl font-semibold text-foreground">{user.name}</h1>
+                <h1 className="text-xl font-semibold text-foreground sm:text-2xl">{user.name}</h1>
                 <p className="text-sm text-muted-foreground">{user.email}</p>
               </div>
               <Button size="sm" onClick={() => setIsEditOpen(true)}>
@@ -129,12 +128,12 @@ export default function Profile() {
               </Button>
             </div>
 
-            <div className="mt-8 rounded-xl border border-border bg-card p-6 text-center">
+            <div className="mt-6 rounded-xl border border-border bg-card p-4 text-center sm:mt-8 sm:p-6">
               <p className="flex items-center justify-center gap-2 text-sm font-medium text-muted-foreground">
                 <Wallet className="size-4 text-amber-500" />
                 Meus pontos
               </p>
-              <p className="mt-1 text-4xl font-bold text-foreground">{user.total_score}</p>
+              <p className="mt-1 text-3xl font-bold text-foreground sm:text-4xl">{user.total_score}</p>
             </div>
 
             <RedeemedPrizesCard />

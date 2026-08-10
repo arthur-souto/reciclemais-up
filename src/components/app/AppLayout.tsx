@@ -30,8 +30,8 @@ export function AppLayout({ title, section, onSectionChange, children }: AppLayo
         canManagePrizes={canManagePrizes}
       />
       <SidebarInset>
-        <header className="sticky top-0 z-10 flex items-center justify-between gap-2 border-b border-border bg-background px-4 py-3 sm:px-6 sm:py-4">
-          <div className="flex min-w-0 items-center gap-2 sm:gap-3">
+        <header className="sticky top-0 z-10 flex items-center  justify-between gap-2 border-b border-border bg-background px-4 py-3 sm:px-6 sm:py-4">
+          <div className="flex min-w-0 items-center gap-2 sm:gap-3  ">
             <SidebarTrigger />
             <h1 className="truncate text-lg font-semibold text-foreground">{title}</h1>
           </div>

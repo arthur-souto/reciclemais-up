@@ -38,10 +38,10 @@ export function DeliveriesSection() {
   }, [meta, page])
 
   return (
-    <section className="flex w-full flex-col gap-4 px-6 pt-8 pb-16 sm:px-8 lg:px-12">
+    <section className="flex w-full flex-col gap-4 px-6 pt-8 pb-16 sm:px-8 lg:px-12 bg-[#f6f3ee]">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h2 className="text-xl font-semibold text-foreground">Entregas</h2>
+          <h2 className="text-xl font-semibold text-primary">Entregas</h2>
           <p className="text-sm text-muted-foreground">
             Registre entregas de materiais recicláveis e envie evidências para ganhar pontos.
           </p>

@@ -1,44 +1,53 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+
 @theme inline {
-    --font-heading: var(--font-sans);
-    --font-sans: 'Geist Variable', sans-serif;
-    --color-sidebar-ring: var(--sidebar-ring);
-    --color-sidebar-border: var(--sidebar-border);
-    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-    --color-sidebar-accent: var(--sidebar-accent);
-    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-    --color-sidebar-primary: var(--sidebar-primary);
-    --color-sidebar-foreground: var(--sidebar-foreground);
-    --color-sidebar: var(--sidebar);
-    --color-chart-5: var(--chart-5);
-    --color-chart-4: var(--chart-4);
-    --color-chart-3: var(--chart-3);
-    --color-chart-2: var(--chart-2);
-    --color-chart-1: var(--chart-1);
-    --color-ring: var(--ring);
-    --color-input: var(--input);
-    --color-border: var(--border);
-    --color-destructive: var(--destructive);
-    --color-accent-foreground: var(--accent-foreground);
-    --color-accent: var(--accent);
-    --color-muted-foreground: var(--muted-foreground);
-    --color-muted: var(--muted);
-    --color-secondary-foreground: var(--secondary-foreground);
-    --color-secondary: var(--secondary);
-    --color-primary-foreground: var(--primary-foreground);
-    --color-primary: var(--primary);
-    --color-popover-foreground: var(--popover-foreground);
-    --color-popover: var(--popover);
-    --color-card-foreground: var(--card-foreground);
-    --color-card: var(--card);
-    --color-foreground: var(--foreground);
-    --color-background: var(--background);
-    --radius-sm: calc(var(--radius) * 0.6);
-    --radius-md: calc(var(--radius) * 0.8);
-    --radius-lg: var(--radius);
-    --radius-xl: calc(var(--radius) * 1.4);
-    --radius-2xl: calc(var(--radius) * 1.8);
-    --radius-3xl: calc(var(--radius) * 2.2);
-    --radius-4xl: calc(var(--radius) * 2.6);
+  --font-heading: var(--font-heading-family);
+  --font-sans: var(--font-body-family);
+
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-foreground: var(--foreground);
+  --color-background: var(--background);
+
+  --color-hero: var(--hero);
+  --color-hero-foreground: var(--hero-foreground);
+  --color-hero-foreground-muted: var(--hero-foreground-muted);
+
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
 }
 
 /*
@@ -46,116 +55,143 @@
  * reciclagem e com a energia de fintech/app brasileiro colorido pedida no
  * design), neutros com leve viés esverdeado em vez de cinza puro, e cantos
  * mais arredondados para um visual mais amigável.
- */
-:root {
-    --background: oklch(0.99 0.004 152);
-    --foreground: oklch(0.18 0.02 152);
-    --card: oklch(0.995 0.003 152);
-    --card-foreground: oklch(0.18 0.02 152);
-    --popover: oklch(0.995 0.003 152);
-    --popover-foreground: oklch(0.18 0.02 152);
-    --primary: oklch(0.5 0.15 152);
-    --primary-foreground: oklch(0.99 0.01 152);
-    --secondary: oklch(0.95 0.02 152);
-    --secondary-foreground: oklch(0.25 0.03 152);
-    --muted: oklch(0.96 0.015 152);
-    --muted-foreground: oklch(0.48 0.02 152);
-    --accent: oklch(0.93 0.04 152);
-    --accent-foreground: oklch(0.25 0.03 152);
-    --destructive: oklch(0.577 0.22 25);
-    --border: oklch(0.9 0.015 152);
-    --input: oklch(0.9 0.015 152);
-    --ring: oklch(0.6 0.14 152);
-    --chart-1: oklch(0.85 0.12 152);
-    --chart-2: oklch(0.7 0.15 152);
-    --chart-3: oklch(0.78 0.15 80);
-    --chart-4: oklch(0.55 0.16 152);
-    --chart-5: oklch(0.5 0.16 255);
-    --radius: 0.65rem;
-    --sidebar: oklch(0.985 0.006 152);
-    --sidebar-foreground: oklch(0.2 0.02 152);
-    --sidebar-primary: oklch(0.5 0.15 152);
-    --sidebar-primary-foreground: oklch(0.99 0.01 152);
-    --sidebar-accent: oklch(0.92 0.05 152);
-    --sidebar-accent-foreground: oklch(0.3 0.04 152);
-    --sidebar-border: oklch(0.9 0.015 152);
-    --sidebar-ring: oklch(0.6 0.14 152);
-}
+ *
+ * Tipografia:
+ * - Poppins: títulos, números grandes e destaques.
+ * - Inter: textos, menus, botões, tabelas e informações.
+ */:root {
+  --font-heading-family: 'Poppins', sans-serif;
+  --font-body-family: 'Inter', sans-serif;
 
+  /* Fundo geral */
+  --background: #F7F5EF;
+  --foreground: #20251D;
+
+  /* Cards */
+  --card: #FFFFFF;
+  --card-foreground: #20251D;
+
+  /* Popovers */
+  --popover: #FFFFFF;
+  --popover-foreground: #20251D;
+
+  /* Verde principal */
+  --primary: #6C8F3D;
+  --primary-foreground: #FFFFFF;
+
+  /* Verde suave */
+  --secondary: #E8F0D8;
+  --secondary-foreground: #45652A;
+
+  /* Textos secundários */
+  --muted: #F1F3EC;
+  --muted-foreground: #687064;
+
+  /* Hover e destaques */
+  --accent: #DDEAC9;
+  --accent-foreground: #45652A;
+
+  /* Estados */
+  --destructive: #dc2626;
+
+  /* Bordas */
+  --border: #E5E8DF;
+  --input: #E5E8DF;
+  --ring: #6C8F3D;
+
+  /* Gráficos */
+  --chart-1: #6C8F3D;
+  --chart-2: #88A95A;
+  --chart-3: #B6C89A;
+  --chart-4: #45652A;
+  --chart-5: #DDEAC9;
+
+  --radius: 1rem;
+
+  /* Hero principal */
+  --hero: #E8F0D8;
+  --hero-foreground: #20251D;
+  --hero-foreground-muted: #687064;
+
+  /* Sidebar */
+  --sidebar: #FCFBF7;
+  --sidebar-foreground: #20251D;
+
+  --sidebar-primary: #6C8F3D;
+  --sidebar-primary-foreground: #FFFFFF;
+
+  --sidebar-accent: #DDEAC9;
+  --sidebar-accent-foreground: #45652A;
+
+  --sidebar-border: #E5E8DF;
+  --sidebar-ring: #6C8F3D;
+}
 .dark {
-    --background: oklch(0.16 0.012 152);
-    --foreground: oklch(0.96 0.006 152);
-    --card: oklch(0.2 0.015 152);
-    --card-foreground: oklch(0.96 0.006 152);
-    --popover: oklch(0.2 0.015 152);
-    --popover-foreground: oklch(0.96 0.006 152);
-    --primary: oklch(0.72 0.17 152);
-    --primary-foreground: oklch(0.14 0.02 152);
-    --secondary: oklch(0.26 0.02 152);
-    --secondary-foreground: oklch(0.94 0.01 152);
-    --muted: oklch(0.24 0.015 152);
-    --muted-foreground: oklch(0.68 0.02 152);
-    --accent: oklch(0.28 0.05 152);
-    --accent-foreground: oklch(0.94 0.01 152);
-    --destructive: oklch(0.704 0.191 22.216);
-    --border: oklch(1 0 0 / 12%);
-    --input: oklch(1 0 0 / 16%);
-    --ring: oklch(0.65 0.15 152);
-    --chart-1: oklch(0.85 0.12 152);
-    --chart-2: oklch(0.7 0.15 152);
-    --chart-3: oklch(0.78 0.15 80);
-    --chart-4: oklch(0.55 0.16 152);
-    --chart-5: oklch(0.68 0.15 255);
-    --sidebar: oklch(0.19 0.015 152);
-    --sidebar-foreground: oklch(0.95 0.008 152);
-    --sidebar-primary: oklch(0.65 0.17 152);
-    --sidebar-primary-foreground: oklch(0.14 0.02 152);
-    --sidebar-accent: oklch(0.28 0.05 152);
-    --sidebar-accent-foreground: oklch(0.95 0.008 152);
-    --sidebar-border: oklch(1 0 0 / 12%);
-    --sidebar-ring: oklch(0.65 0.15 152);
-}
+  --background: #171A15;
+  --foreground: #F4F4F1;
 
-/*
- * Escopo administrativo: dentro de ".admin-scope" (telas de gestão de
- * Materiais/Prêmios/Visão geral) a paleta muda para um azul mais sóbrio,
- * estilo ferramenta corporativa (Microsoft 365 admin / Fluent), com cantos
- * um pouco menos arredondados — sem precisar tocar em nenhum componente,
- * só reaproveitando as mesmas variáveis.
- */
-.admin-scope {
-    --background: oklch(0.975 0.006 255);
-    --foreground: oklch(0.22 0.02 255);
-    --primary: oklch(0.47 0.15 255);
-    --primary-foreground: oklch(0.99 0.005 255);
-    --secondary: oklch(0.95 0.015 255);
-    --secondary-foreground: oklch(0.25 0.02 255);
-    --muted: oklch(0.955 0.01 255);
-    --muted-foreground: oklch(0.48 0.015 255);
-    --accent: oklch(0.93 0.03 255);
-    --accent-foreground: oklch(0.28 0.03 255);
-    --border: oklch(0.9 0.012 255);
-    --input: oklch(0.9 0.012 255);
-    --ring: oklch(0.58 0.13 255);
-    --card: oklch(0.995 0.004 255);
-    --card-foreground: oklch(0.2 0.02 255);
-    --radius: 0.5rem;
-}
+  --card: #20241D;
+  --card-foreground: #F4F4F1;
 
+  --popover: #20241D;
+  --popover-foreground: #F4F4F1;
+
+  --primary: #88A95A;
+  --primary-foreground: #10120E;
+
+  --secondary: #283022;
+  --secondary-foreground: #F4F4F1;
+
+  --muted: #222720;
+  --muted-foreground: #B5BCB0;
+
+  --accent: #314027;
+  --accent-foreground: #F4F4F1;
+
+  --border: #2D3529;
+  --input: #2D3529;
+  --ring: #88A95A;
+
+  --hero: #222D1B;
+  --hero-foreground: #F4F4F1;
+  --hero-foreground-muted: #C7CEC0;
+
+  --sidebar: #1B1F18;
+  --sidebar-foreground: #F4F4F1;
+
+  --sidebar-primary: #88A95A;
+  --sidebar-primary-foreground: #10120E;
+
+  --sidebar-accent: #314027;
+  --sidebar-accent-foreground: #F4F4F1;
+
+  --sidebar-border: #2D3529;
+  --sidebar-ring: #88A95A;
+}
 .dark .admin-scope {
-    --background: oklch(0.145 0.014 255);
-    --foreground: oklch(0.95 0.008 255);
-    --primary: oklch(0.68 0.15 255);
-    --primary-foreground: oklch(0.15 0.02 255);
-    --secondary: oklch(0.26 0.02 255);
-    --secondary-foreground: oklch(0.94 0.01 255);
-    --muted: oklch(0.24 0.015 255);
-    --muted-foreground: oklch(0.68 0.02 255);
-    --accent: oklch(0.28 0.05 255);
-    --accent-foreground: oklch(0.94 0.01 255);
-    --border: oklch(1 0 0 / 12%);
-    --input: oklch(1 0 0 / 16%);
-    --ring: oklch(0.62 0.14 255);
-    --card: oklch(0.21 0.02 255);
-    --card-foreground: oklch(0.94 0.01 255);
+  --background: oklch(0.145 0.014 255);
+  --foreground: oklch(0.95 0.008 255);
+  --primary: oklch(0.68 0.15 255);
+  --primary-foreground: oklch(0.15 0.02 255);
+  --secondary: oklch(0.26 0.02 255);
+  --secondary-foreground: oklch(0.94 0.01 255);
+  --muted: oklch(0.24 0.015 255);
+  --muted-foreground: oklch(0.68 0.02 255);
+  --accent: oklch(0.28 0.05 255);
+  --accent-foreground: oklch(0.94 0.01 255);
+  --border: oklch(1 0 0 / 12%);
+  --input: oklch(1 0 0 / 16%);
+  --ring: oklch(0.62 0.14 255);
+  --card: oklch(0.21 0.02 255);
+  --card-foreground: oklch(0.94 0.01 255);
+}
+
+/* Tipografia padrão do sistema */
+body {
+  font-family: var(--font-body-family);
+}
+
+/* Classe utilitária para títulos e destaques */
+.font-heading {
+  font-family: var(--font-heading-family);
 }

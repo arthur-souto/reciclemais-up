@@ -107,15 +107,15 @@ export function PrizeCatalog() {
   }
 
   return (
-    <div className="flex w-full flex-col gap-8 px-6 pt-8 pb-16 sm:px-8 lg:px-12">
-      <div className="flex flex-wrap items-center justify-between gap-3">
+    <div className="flex w-full flex-col gap-6 px-4 pt-6 pb-12 sm:gap-8 sm:px-8 sm:pt-8 sm:pb-16 lg:px-12">
+      <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
         <div className="flex w-fit items-center gap-2 rounded-xl border border-border bg-card px-4 py-3">
           <Wallet className="size-5 text-amber-500" />
           <span className="text-sm text-muted-foreground">Seu saldo:</span>
           <span className="text-lg font-semibold text-foreground">{user?.total_score ?? '—'} pts</span>
         </div>
 
-        <Button variant="outline" size="sm" onClick={() => setIsHistoryOpen(true)}>
+        <Button variant="outline" size="sm" onClick={() => setIsHistoryOpen(true)} className="w-full sm:w-auto">
           <History />
           Meus resgates
         </Button>
@@ -123,12 +123,12 @@ export function PrizeCatalog() {
 
       <section className="flex flex-col gap-4">
         <div>
-          <h2 className="text-xl font-semibold text-foreground">Prêmios disponíveis</h2>
+          <h2 className="text-lg font-semibold text-foreground sm:text-xl">Prêmios disponíveis</h2>
           <p className="text-sm text-muted-foreground">Troque seus pontos por prêmios.</p>
         </div>
 
         {isLoadingPrizes && (
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+          <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
             {Array.from({ length: 5 }).map((_, index) => (
               <Skeleton key={index} className="aspect-square w-full" />
             ))}
@@ -144,7 +144,7 @@ export function PrizeCatalog() {
         )}
 
         {!isLoadingPrizes && !isPrizesError && activePrizes != null && activePrizes.length > 0 && (
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+          <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
             {activePrizes.map((prize) => (
               <PrizeCard
                 key={prize.id}
@@ -162,3 +162,5 @@ export function PrizeCatalog() {
     </div>
   )
 }
+
+  
