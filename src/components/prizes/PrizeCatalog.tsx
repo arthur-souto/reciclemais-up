@@ -121,43 +121,90 @@ export function PrizeCatalog() {
   }
 
   return (
-    <div className="flex w-full flex-col gap-6 px-4 pt-6 pb-12 sm:gap-8 sm:px-8 sm:pt-8 sm:pb-16 lg:px-12">
-      <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
-        <div className="flex w-fit items-center gap-2 rounded-xl border border-border bg-card px-4 py-3">
-          <Wallet className="size-5 text-amber-500" />
-          <span className="text-sm text-muted-foreground">Seu saldo:</span>
-          <span className="text-lg font-semibold text-foreground">{user?.total_score ?? '—'} pts</span>
-        </div>
+ 
+ <div className="flex w-full flex-col gap-7 px-4 pt-5 pb-12 sm:gap-9 sm:px-8 sm:pt-7 sm:pb-16 lg:px-12">
+ <section className="flex items-center justify-between gap-3">
+  {/* Saldo */}
+  <div className="flex items-center gap-3 rounded-2xl border border-border/70 bg-card px-3.5 py-2.5 shadow-sm sm:px-4">
+    <div className="flex size-9 items-center justify-center rounded-xl bg-primary/10">
+      <Wallet className="size-4 text-primary" />
+    </div>
 
-        <Button variant="outline" size="sm" onClick={() => setIsHistoryOpen(true)} className="w-full sm:w-auto">
-          <History />
-          Meus resgates
-        </Button>
+    <div className="flex flex-col">
+      <span className="text-[11px] font-medium text-muted-foreground">
+        Seus pontos
+      </span>
+
+      <span className="text-base font-bold leading-tight text-foreground">
+        {user?.total_score ?? '—'}
+        <span className="ml-1 text-xs font-medium text-muted-foreground">
+          pts
+        </span>
+      </span>
+    </div>
+  </div>
+
+  {/* Histórico */}
+  <Button
+    variant="outline"
+    size="sm"
+    onClick={() => setIsHistoryOpen(true)}
+    className="h-11 rounded-2xl border-border/70 bg-card px-3.5 shadow-sm"
+  >
+    <History className="size-4" />
+    <span className="hidden sm:inline">Meus resgates</span>
+    <span className="sm:hidden">Resgates</span>
+  </Button>
+</section>
+       {/* Catálogo */}
+    <section className="flex flex-col gap-5">
+      <div className="flex items-end justify-between gap-4">
+        <div>
+          <div className="flex items-center gap-2">
+            <Gift className="size-5 text-primary" />
+
+            <h2 className="text-lg font-bold tracking-tight text-foreground sm:text-xl">
+              Prêmios disponíveis
+            </h2>
+          </div>
+
+          <p className="mt-1 text-xs text-muted-foreground sm:text-sm">
+            Use seus pontos para desbloquear benefícios.
+          </p>
+        </div>
       </div>
 
-      <section className="flex flex-col gap-4">
-        <div>
-          <h2 className="text-lg font-semibold text-foreground sm:text-xl">Prêmios disponíveis</h2>
-          <p className="text-sm text-muted-foreground">Troque seus pontos por prêmios.</p>
+      {isLoadingPrizes && (
+        <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+          {Array.from({ length: 5 }).map((_, index) => (
+            <Skeleton
+              key={index}
+              className="aspect-[0.82] w-full rounded-2xl"
+            />
+          ))}
         </div>
+      )}
 
-        {isLoadingPrizes && (
-          <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
-            {Array.from({ length: 5 }).map((_, index) => (
-              <Skeleton key={index} className="aspect-square w-full" />
-            ))}
-          </div>
+      {!isLoadingPrizes && isPrizesError && (
+        <ErrorState
+          mensagem="Não foi possível carregar os prêmios."
+          onRetry={() => refetchPrizes()}
+        />
+      )}
+
+      {!isLoadingPrizes &&
+        !isPrizesError &&
+        activePrizes?.length === 0 && (
+          <EmptyState
+            mensagem="Nenhum prêmio disponível no momento."
+            icon={Gift}
+          />
         )}
 
-        {!isLoadingPrizes && isPrizesError && (
-          <ErrorState mensagem="Não foi possível carregar os prêmios." onRetry={() => refetchPrizes()} />
-        )}
-
-        {!isLoadingPrizes && !isPrizesError && activePrizes?.length === 0 && (
-          <EmptyState mensagem="Nenhum prêmio disponível no momento." icon={Gift} />
-        )}
-
-        {!isLoadingPrizes && !isPrizesError && activePrizes != null && activePrizes.length > 0 && (
+      {!isLoadingPrizes &&
+        !isPrizesError &&
+        activePrizes != null &&
+        activePrizes.length > 0 && (
           <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
             {activePrizes.map((prize) => (
               <PrizeCard
@@ -170,10 +217,17 @@ export function PrizeCatalog() {
             ))}
           </div>
         )}
-      </section>
+    </section>
 
-      <RedemptionsHistoryDialog open={isHistoryOpen} onOpenChange={setIsHistoryOpen} />
-    </div>
+    <RedemptionsHistoryDialog
+      open={isHistoryOpen}
+      onOpenChange={setIsHistoryOpen}
+    />
+  </div>
+       
+    
+     
+ 
   )
 }
 

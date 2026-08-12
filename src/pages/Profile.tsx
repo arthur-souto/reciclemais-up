@@ -38,7 +38,7 @@ function RedeemedPrizesCard() {
   }, [meta, page])
 
   return (
-    <div className="mt-6 rounded-xl border border-border bg-card p-4 sm:p-6">
+    <div className="mt-6 rounded-xl border border-border  p-4 sm:p-6 bg-gradient-to-b from-primary/20 via-primary/5 to-background">
       <h2 className="flex items-center gap-2 text-base font-semibold text-foreground">
         <Gift className="size-5 text-primary" />
         Prêmios resgatados
@@ -96,7 +96,7 @@ export default function Profile() {
       section="home"
       onSectionChange={(next: AppSection) => navigate(`/?section=${next}`)}
     >
-      <div className="mx-auto w-full max-w-2xl px-4 py-6 sm:px-8 sm:py-10">
+      <div className="mx-auto w-full max-w-2xl px-4 py-6 sm:px-8 sm:py-10 ">
         {isLoading && (
           <div className="flex flex-col items-center gap-4">
             <Skeleton className="size-24 rounded-full" />

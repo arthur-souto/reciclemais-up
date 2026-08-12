@@ -88,17 +88,25 @@ export function RecyclingCentersSection() {
 
   return (
     <section className="w-full px-6 pt-8 pb-10 sm:px-8 lg:px-12">
-      <div className="flex items-center gap-2">
-        <MapPinned className="size-5 text-primary" />
-        <h2 className="text-xl font-semibold text-primary">Pontos de coleta perto de você</h2>
-      </div>
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <div className="flex items-center gap-2">
+          <MapPinned className="size-5 text-primary" />
+          <h2 className="text-xl font-semibold text-foreground">Pontos de coleta perto de você</h2>
+        </div>
       <p className="mt-1 text-sm text-muted-foreground">
         Encontramos ecopontos e centros de reciclagem próximos usando sua localização.
       </p>
+  {location.status === 'ready' && !isLoadingCenters && !errorMessage && centers != null && centers.length > 0 && (
+          <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
+            {centers.length} {centers.length === 1 ? 'ponto encontrado' : 'pontos encontrados'}
+          </span>
+        )}
+      </div>
 
-      <div className="mt-4">
+     
+       <div className="mt-4">
         {(location.status === 'idle' || location.status === 'locating') && (
-          <Skeleton className="h-80 w-full sm:h-96" />
+          <Skeleton className="h-80 w-full rounded-2xl sm:h-96" />
         )}
 
         {(location.status === 'denied' || location.status === 'unsupported') && (
@@ -109,7 +117,7 @@ export function RecyclingCentersSection() {
                 ? 'Seu navegador não suporta geolocalização.'
                 : 'Precisamos da sua localização para mostrar pontos de coleta perto de você.'
             }
-            className="h-80 justify-center sm:h-96"
+            className="h-80 justify-center rounded-2xl border border-dashed border-border sm:h-96"
           />
         )}
         {location.status === 'denied' && (
@@ -121,48 +129,83 @@ export function RecyclingCentersSection() {
           </div>
         )}
 
-        {location.status === 'ready' && (
+         {location.status === 'ready' && (
           <>
-            {isLoadingCenters && <Skeleton className="h-80 w-full sm:h-96" />}
+            {isLoadingCenters && <Skeleton className="h-80 w-full rounded-2xl sm:h-96" />}
 
             {!isLoadingCenters && errorMessage && (
               <ErrorState
                 mensagem={errorMessage}
                 onRetry={() => setLocation({ ...location })}
-                className="h-80 justify-center sm:h-96"
+                className="h-80 justify-center rounded-2xl border border-dashed border-border sm:h-96"
               />
             )}
 
             {!isLoadingCenters && !errorMessage && centers != null && (
               <>
-                <RecyclingCentersMap
-                  userLocation={{ lat: location.lat, lon: location.lon }}
-                  centers={centers}
-                  focusedCenterId={focusedCenterId}
-                />
+              <div className="relative overflow-hidden rounded-2xl border border-border/60">
+  <RecyclingCentersMap
+    userLocation={{ lat: location.lat, lon: location.lon }}
+    centers={centers}
+    focusedCenterId={focusedCenterId}
+  />
+
+  <button
+    type="button"
+    onClick={requestLocation}
+    aria-label="Usar minha localização"
+    className="
+      absolute
+      bottom-4
+      right-4
+      z-10
+      flex
+      size-11
+      items-center
+      justify-center
+      rounded-full
+      border
+      border-border/60
+      bg-card/95
+      text-foreground
+      shadow-lg
+      backdrop-blur-sm
+      transition-all
+      hover:scale-105
+      hover:bg-primary
+      hover:text-primary-foreground
+      active:scale-95
+    "
+  >
+    <Navigation className="size-[18px]" />
+  </button>
+</div>
 
                 {centers.length === 0 ? (
                   <EmptyState
                     icon={Recycle}
                     mensagem="Nenhum ponto de coleta foi encontrado na sua região ainda."
-                    className="mt-4"
+                    className="mt-4 rounded-2xl border border-dashed border-border"
                   />
                 ) : (
-                  <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                     <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
                     {centers.map((center) => (
                       <button
                         key={center.id}
                         type="button"
                         onClick={() => setFocusedCenterId(center.id)}
-                        className="flex flex-col gap-1 rounded-lg border border-border bg-card p-3 text-left transition-colors hover:border-primary/50 hover:bg-accent"
+                        aria-pressed={focusedCenterId === center.id}
+                        className={`flex flex-col gap-1 rounded-xl border bg-card p-3 text-left transition-all hover:border-primary/50 hover:bg-accent hover:shadow-sm ${
+                          focusedCenterId === center.id ? 'border-primary ring-1 ring-primary/30' : 'border-border'
+                        }`}
                       >
                         <div className="flex items-start gap-2">
-                          <span className="mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-full bg-green-100 dark:bg-green-500/15">
-                            <Recycle className="size-3.5 text-green-700 dark:text-green-400" />
+                          <span className="mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-full bg-primary/10">
+                            <Recycle className="size-3.5 text-primary" />
                           </span>
-                          <div className="flex flex-col">
-                            <span className="text-sm font-medium text-foreground">{center.name}</span>
-                            <span className="text-xs text-muted-foreground">
+                          <div className="flex min-w-0 flex-col">
+                            <span className="truncate text-sm font-medium text-foreground">{center.name}</span>
+                            <span className="truncate text-xs text-muted-foreground">
                               {center.address ?? 'Endereço não informado'}
                             </span>
                           </div>

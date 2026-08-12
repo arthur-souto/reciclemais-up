@@ -7,6 +7,7 @@ import { AppSidebar, type AppSection } from '@/components/app/AppSidebar'
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
 import { useAuthContext } from '@/context/AuthContext'
 import { useLogout } from '@/hooks/useAuth'
+import { Footer } from './Footer'
 
 interface AppLayoutProps {
   title: string
@@ -46,6 +47,8 @@ export function AppLayout({ title, section, onSectionChange, children }: AppLayo
         </header>
 
         {children}
+{/**    <Footer/> */}
+     
       </SidebarInset>
     </SidebarProvider>
   )

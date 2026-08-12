@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom'
+import { Gift, Sparkles } from 'lucide-react'
 import { AppLayout } from '@/components/app/AppLayout'
 import { PrizeCatalog } from '@/components/prizes/PrizeCatalog'
 import type { AppSection } from '@/components/app/AppSidebar'
@@ -10,18 +11,44 @@ export default function PrizesCatalogPage() {
     <AppLayout
       title="Loja de prêmios"
       section="home"
-      onSectionChange={(next: AppSection) => navigate(`/?section=${next}`)}
+      onSectionChange={(next: AppSection) =>
+        navigate(`/?section=${next}`)
+      }
     >
-      <div className="w-full border-b border-border/60 px-4 pt-8 pb-8 sm:px-8 sm:pt-14 sm:pb-12 lg:px-12">
-        <h1 className="text-balance text-3xl font-extrabold tracking-tight text-foreground sm:text-5xl lg:text-6xl xl:text-7xl">
-          Loja de prêmios
-        </h1>
-        <p className="mt-3 text-base text-muted-foreground sm:mt-4 sm:text-xl lg:max-w-2xl">
-          Troque os pontos que você ganhou reciclando por prêmios.
-        </p>
-      </div>
+      <main className="min-h-screen bg-gradient-to-b from-primary/20 via-primary/5 to-background">
 
-      <PrizeCatalog />
+        {/* Hero */}
+         <div className="min-h-full bg-surface">
+        {/* Hero */}
+        <section className="relative overflow-hidden rounded-3xl bg-gradient-hero p-8 shadow-hero sm:p-12">
+          <div className="pointer-events-none absolute -right-16 -top-24 h-72 w-72 rounded-full bg-white/15 blur-2xl" />
+          <div className="pointer-events-none absolute -bottom-28 left-1/3 h-72 w-72 rounded-full bg-white/10 blur-3xl" />
+
+          <div className="relative max-w-2xl">
+            <div className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1.5 text-xs font-medium tracking-wide text-brand-foreground backdrop-blur">
+              <Sparkles className="h-3.5 w-3.5" />
+              Recicle+
+            </div>
+
+            <h1 className="mt-5 flex items-center gap-3 text-3xl font-semibold tracking-tight text-brand-foreground sm:text-4xl">
+              <span className="grid h-11 w-11 place-items-center rounded-2xl bg-white/15 backdrop-blur">
+                <Gift className="h-5 w-5" />
+              </span>
+              Loja de prêmios
+            </h1>
+
+            <p className="mt-3 max-w-md text-sm leading-relaxed text-brand-foreground/80 sm:text-base">
+              Troque seus pontos por benefícios e recompensas.
+            </p>
+          </div>
+        </section>
+
+        <div className="mt-8">
+          <PrizeCatalog />
+        </div>
+      </div>
+    
+      </main>
     </AppLayout>
   )
 }
