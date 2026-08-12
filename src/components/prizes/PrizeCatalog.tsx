@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { AxiosError } from 'axios'
 import { toast } from 'sonner'
-import { Gift, History, Wallet } from 'lucide-react'
+import { ArrowRight, Coins, Gift, History, Sparkles, Wallet } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { EmptyState } from '@/components/EmptyState'
@@ -101,8 +101,14 @@ export function PrizeCatalog() {
     refetch: refetchPrizes,
   } = usePrizes({ page: 1, limit: CATALOG_PAGE_SIZE })
   const activePrizes = prizesData?.payload.filter((prize) => prize.status === 'ACTIVE')
+  const featuredPrize =
+    activePrizes?.find((prize) => !!prize.image_url) ?? activePrizes?.[0]
 
   const redeemPrize = useRedeemPrize()
+
+  function scrollToCatalog() {
+    document.getElementById('catalogo')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
 
   function handleRedeem(prize: Prize) {
     if (prize.id == null) return
@@ -122,22 +128,22 @@ export function PrizeCatalog() {
 
   return (
  
- <div className="flex w-full flex-col gap-7 px-4 pt-5 pb-12 sm:gap-9 sm:px-8 sm:pt-7 sm:pb-16 lg:px-12">
+ <div className="flex w-full flex-col gap-8 px-4 pt-5 pb-12 sm:gap-10 sm:px-8 sm:pt-7 sm:pb-16 lg:px-12">
  <section className="flex items-center justify-between gap-3">
   {/* Saldo */}
-  <div className="flex items-center gap-3 rounded-2xl border border-border/70 bg-card px-3.5 py-2.5 shadow-sm sm:px-4">
-    <div className="flex size-9 items-center justify-center rounded-xl bg-primary/10">
-      <Wallet className="size-4 text-primary" />
+  <div className="flex items-center gap-3 rounded-2xl border border-border/70 bg-card px-4 py-3 shadow-sm sm:px-5 sm:py-3.5">
+    <div className="flex size-11 items-center justify-center rounded-xl bg-primary/10">
+      <Wallet className="size-5 text-primary" />
     </div>
 
     <div className="flex flex-col">
-      <span className="text-[11px] font-medium text-muted-foreground">
+      <span className="text-xs font-medium text-muted-foreground">
         Seus pontos
       </span>
 
-      <span className="text-base font-bold leading-tight text-foreground">
+      <span className="text-xl font-bold leading-tight text-foreground">
         {user?.total_score ?? '—'}
-        <span className="ml-1 text-xs font-medium text-muted-foreground">
+        <span className="ml-1 text-sm font-medium text-muted-foreground">
           pts
         </span>
       </span>
@@ -147,28 +153,80 @@ export function PrizeCatalog() {
   {/* Histórico */}
   <Button
     variant="outline"
-    size="sm"
+    size="lg"
     onClick={() => setIsHistoryOpen(true)}
-    className="h-11 rounded-2xl border-border/70 bg-card px-3.5 shadow-sm"
+    className="rounded-2xl border-border/70 bg-card shadow-sm"
   >
     <History className="size-4" />
     <span className="hidden sm:inline">Meus resgates</span>
     <span className="sm:hidden">Resgates</span>
   </Button>
 </section>
+
+  {/* Banner de destaque */}
+  {!isLoadingPrizes && !isPrizesError && featuredPrize && (
+    <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-primary via-primary to-[#4C7A32] p-6 text-primary-foreground shadow-lg sm:p-10">
+      <div className="pointer-events-none absolute -right-14 -top-20 h-64 w-64 rounded-full bg-white/10 blur-2xl" />
+      <div className="pointer-events-none absolute -bottom-24 left-1/4 h-64 w-64 rounded-full bg-white/10 blur-3xl" />
+
+      <div className="relative flex flex-col-reverse items-center gap-6 sm:flex-row sm:justify-between sm:gap-10">
+        <div className="max-w-md text-center sm:text-left">
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1.5 text-xs font-semibold uppercase tracking-wide backdrop-blur">
+            <Sparkles className="size-3.5" />
+            Destaque da loja
+          </span>
+
+          <h2 className="mt-4 text-2xl font-extrabold tracking-tight sm:text-3xl lg:text-4xl">
+            {featuredPrize.name}
+          </h2>
+
+          {featuredPrize.description && (
+            <p className="mt-2 line-clamp-2 text-sm text-primary-foreground/85 sm:text-base">
+              {featuredPrize.description}
+            </p>
+          )}
+
+          <div className="mt-4 flex items-center justify-center gap-2 sm:justify-start">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-white/20 px-4 py-2 text-sm font-bold backdrop-blur">
+              <Coins className="size-4" />
+              {featuredPrize.required_points} pts
+            </span>
+          </div>
+
+          <Button size="lg" variant="secondary" className="mt-6" onClick={scrollToCatalog}>
+            Ver todos os prêmios
+            <ArrowRight />
+          </Button>
+        </div>
+
+        <div className="flex size-40 shrink-0 items-center justify-center overflow-hidden rounded-3xl bg-white/15 shadow-inner backdrop-blur sm:size-56">
+          {featuredPrize.image_url ? (
+            <img
+              src={featuredPrize.image_url}
+              alt={featuredPrize.name}
+              className="size-full object-cover"
+            />
+          ) : (
+            <Gift className="size-20 text-white/70" />
+          )}
+        </div>
+      </div>
+    </section>
+  )}
+
        {/* Catálogo */}
-    <section className="flex flex-col gap-5">
+    <section id="catalogo" className="flex scroll-mt-20 flex-col gap-5">
       <div className="flex items-end justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <Gift className="size-5 text-primary" />
+            <Gift className="size-6 text-primary" />
 
-            <h2 className="text-lg font-bold tracking-tight text-foreground sm:text-xl">
+            <h2 className="text-xl font-bold tracking-tight text-foreground sm:text-2xl">
               Prêmios disponíveis
             </h2>
           </div>
 
-          <p className="mt-1 text-xs text-muted-foreground sm:text-sm">
+          <p className="mt-1 text-sm text-muted-foreground sm:text-base">
             Use seus pontos para desbloquear benefícios.
           </p>
         </div>

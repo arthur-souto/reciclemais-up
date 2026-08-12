@@ -38,18 +38,72 @@ export function DeliveriesSection() {
   }, [meta, page])
 
   return (
-    <section className="flex w-full flex-col gap-4 px-6 pt-8 pb-16 sm:px-8 lg:px-12 bg-[#f6f3ee]">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h2 className="text-xl font-semibold text-primary">Entregas</h2>
-          <p className="text-sm text-muted-foreground">
-            Registre entregas de materiais recicláveis e envie evidências para ganhar pontos.
-          </p>
+    <section className="px-4 pt-6 pb-12 sm:px-8 sm:pt-8 sm:pb-16 lg:px-12">
+      <div className="mx-auto max-w-7xl overflow-hidden rounded-3xl border border-border bg-card shadow-sm">
+
+        {/* Cabeçalho em destaque */}
+        <div className="flex flex-col gap-4 border-b border-border/60 bg-gradient-to-br from-hero/60 via-card to-card px-5 py-6 sm:flex-row sm:items-center sm:justify-between sm:px-8 sm:py-7">
+          <div className="flex items-center gap-3.5">
+            <div className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-primary sm:size-14">
+              <Recycle className="size-6 sm:size-7" />
+            </div>
+            <div>
+              <div className="flex flex-wrap items-center gap-2">
+                <h2 className="font-heading text-2xl font-bold text-foreground sm:text-3xl">Suas últimas entregas</h2>
+                {meta != null && meta.total > 0 && (
+                  <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
+                    {meta.total} {meta.total === 1 ? 'registrada' : 'registradas'}
+                  </span>
+                )}
+              </div>
+              <p className="mt-1 text-sm text-muted-foreground sm:text-base">
+                Acompanhe suas entregas de materiais recicláveis e envie evidências para ganhar pontos.
+              </p>
+            </div>
+          </div>
+          <Button size="lg" onClick={() => setIsCreateOpen(true)} className="w-full shrink-0 sm:w-auto">
+            <Plus />
+            Nova entrega
+          </Button>
         </div>
-        <Button onClick={() => setIsCreateOpen(true)} className="w-full sm:w-auto">
-          <Plus />
-          Nova entrega
-        </Button>
+
+        <div className="flex flex-col gap-5 px-5 py-6 sm:px-8 sm:py-7">
+          {isLoading && (
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {Array.from({ length: PAGE_SIZE }).map((_, index) => (
+                <Skeleton key={index} className="aspect-square w-full" />
+              ))}
+            </div>
+          )}
+
+          {!isLoading && isError && (
+            <ErrorState mensagem="Não foi possível carregar suas entregas." onRetry={() => refetch()} />
+          )}
+
+          {!isLoading && !isError && deliveries?.length === 0 && (
+            <EmptyState
+              mensagem="Nenhuma entrega registrada ainda. Que tal começar agora?"
+              icon={Recycle}
+            />
+          )}
+
+          {!isLoading && !isError && deliveries != null && deliveries.length > 0 && (
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {deliveries.map((delivery) => (
+                <DeliveryCard
+                  key={delivery.id}
+                  delivery={delivery}
+                  onUploadEvidence={setEvidenceTarget}
+                  onOpenDetails={setDetailsTarget}
+                />
+              ))}
+            </div>
+          )}
+
+          {!isLoading && !isError && meta != null && meta.total > 0 && (
+            <Pagination meta={meta} onPageChange={setPage} disabled={isLoading} />
+          )}
+        </div>
       </div>
 
       <Button
@@ -60,42 +114,6 @@ export function DeliveriesSection() {
       >
         <Plus />
       </Button>
-
-      {isLoading && (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
-          {Array.from({ length: PAGE_SIZE }).map((_, index) => (
-            <Skeleton key={index} className="aspect-square w-full" />
-          ))}
-        </div>
-      )}
-
-      {!isLoading && isError && (
-        <ErrorState mensagem="Não foi possível carregar suas entregas." onRetry={() => refetch()} />
-      )}
-
-      {!isLoading && !isError && deliveries?.length === 0 && (
-        <EmptyState
-          mensagem="Nenhuma entrega registrada ainda. Que tal começar agora?"
-          icon={Recycle}
-        />
-      )}
-
-      {!isLoading && !isError && deliveries != null && deliveries.length > 0 && (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
-          {deliveries.map((delivery) => (
-            <DeliveryCard
-              key={delivery.id}
-              delivery={delivery}
-              onUploadEvidence={setEvidenceTarget}
-              onOpenDetails={setDetailsTarget}
-            />
-          ))}
-        </div>
-      )}
-
-      {!isLoading && !isError && meta != null && meta.total > 0 && (
-        <Pagination meta={meta} onPageChange={setPage} disabled={isLoading} />
-      )}
 
       <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
         <DialogContent className="max-h-[85vh] overflow-y-auto sm:max-w-md">

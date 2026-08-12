@@ -38,8 +38,8 @@ function RedeemedPrizesCard() {
   }, [meta, page])
 
   return (
-    <div className="mt-6 rounded-xl border border-border  p-4 sm:p-6 bg-gradient-to-b from-primary/20 via-primary/5 to-background">
-      <h2 className="flex items-center gap-2 text-base font-semibold text-foreground">
+    <div className="mt-6 rounded-2xl border border-border bg-card p-5 shadow-sm sm:mt-8 sm:p-6">
+      <h2 className="flex items-center gap-2 text-lg font-semibold text-foreground">
         <Gift className="size-5 text-primary" />
         Prêmios resgatados
       </h2>
@@ -65,10 +65,10 @@ function RedeemedPrizesCard() {
           <ul className="flex flex-col divide-y divide-border">
             {redemptions.map((redemption) => (
               <li key={redemption.id} className="flex flex-col gap-1 py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
-                <span className="text-sm text-foreground sm:text-base">
+                <span className="text-base text-foreground">
                   <RedemptionPrizeInfo prizeId={redemption.fk_prize} />
                 </span>
-                <span className="shrink-0 text-xs text-muted-foreground sm:text-sm">
+                <span className="shrink-0 text-sm text-muted-foreground">
                   {formatDateTime(redemption.redeemed_at)}
                 </span>
               </li>
@@ -96,7 +96,7 @@ export default function Profile() {
       section="home"
       onSectionChange={(next: AppSection) => navigate(`/?section=${next}`)}
     >
-      <div className="mx-auto w-full max-w-2xl px-4 py-6 sm:px-8 sm:py-10 ">
+      <div className="mx-auto w-full max-w-2xl px-4 py-8 sm:px-8 sm:py-12">
         {isLoading && (
           <div className="flex flex-col items-center gap-4">
             <Skeleton className="size-24 rounded-full" />
@@ -111,63 +111,72 @@ export default function Profile() {
 
         {!isLoading && !isError && user && (
           <>
-            <div className="flex flex-col items-center gap-3 text-center">
-              <UserAvatar
-                src={user.profile_image}
-                seed={user.id ?? user.email}
-                alt={user.name}
-                className="size-20 sm:size-24"
-              />
-              <div>
-                <h1 className="text-xl font-semibold text-foreground sm:text-2xl">{user.name}</h1>
-                <p className="text-sm text-muted-foreground">{user.email}</p>
+            <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-hero via-secondary/60 to-background px-6 py-10 text-center shadow-sm sm:px-10 sm:py-12">
+
+              {/* Formas geométricas decorativas */}
+              <div className="pointer-events-none absolute -right-12 -top-12 size-40 rounded-full bg-primary/15 blur-2xl" />
+              <div className="pointer-events-none absolute -bottom-16 -left-10 size-40 rounded-full bg-primary/10 blur-2xl" />
+              <div className="pointer-events-none absolute right-8 top-8 hidden size-10 rotate-12 rounded-2xl border-2 border-primary/20 sm:block" />
+              <div className="pointer-events-none absolute left-8 bottom-10 hidden size-7 rounded-full border-2 border-primary/25 sm:block" />
+
+              <div className="relative flex flex-col items-center gap-3">
+                <UserAvatar
+                  src={user.profile_image}
+                  seed={user.id ?? user.email}
+                  alt={user.name}
+                  className="size-24 shadow-md ring-4 ring-card sm:size-28"
+                />
+                <div>
+                  <h1 className="font-heading text-2xl font-bold text-foreground sm:text-3xl">{user.name}</h1>
+                  <p className="text-base text-muted-foreground">{user.email}</p>
+                </div>
+                <Button size="lg" onClick={() => setIsEditOpen(true)}>
+                  <Pencil />
+                  Editar perfil
+                </Button>
               </div>
-              <Button size="sm" onClick={() => setIsEditOpen(true)}>
-                <Pencil />
-                Editar perfil
-              </Button>
             </div>
 
-            <div className="mt-6 rounded-xl border border-border bg-card p-4 text-center sm:mt-8 sm:p-6">
-              <p className="flex items-center justify-center gap-2 text-sm font-medium text-muted-foreground">
+            <div className="mt-6 rounded-2xl border border-border bg-card p-5 text-center shadow-sm sm:mt-8 sm:p-7">
+              <p className="flex items-center justify-center gap-2 text-sm font-semibold text-muted-foreground">
                 <Wallet className="size-4 text-amber-500" />
                 Meus pontos
               </p>
-              <p className="mt-1 text-3xl font-bold text-foreground sm:text-4xl">{user.total_score}</p>
+              <p className="font-heading mt-1 text-4xl font-bold text-primary sm:text-5xl">{user.total_score}</p>
             </div>
 
             <RedeemedPrizesCard />
 
-            <dl className="mt-6 flex flex-col divide-y divide-border rounded-xl border border-border">
-              <div className="flex items-center gap-3 px-4 py-3">
-                <Phone className="size-4 shrink-0 text-muted-foreground" />
+            <dl className="mt-6 flex flex-col divide-y divide-border rounded-2xl border border-border bg-card shadow-sm sm:mt-8">
+              <div className="flex items-center gap-3 px-5 py-4">
+                <Phone className="size-5 shrink-0 text-muted-foreground" />
                 <div className="flex flex-col">
-                  <dt className="text-xs text-muted-foreground">Telefone</dt>
-                  <dd className="text-sm text-foreground">{formatPhone(user.phone) ?? '—'}</dd>
+                  <dt className="text-sm text-muted-foreground">Telefone</dt>
+                  <dd className="text-base text-foreground">{formatPhone(user.phone) ?? '—'}</dd>
                 </div>
               </div>
-              <div className="flex items-center gap-3 px-4 py-3">
-                <MapPin className="size-4 shrink-0 text-muted-foreground" />
+              <div className="flex items-center gap-3 px-5 py-4">
+                <MapPin className="size-5 shrink-0 text-muted-foreground" />
                 <div className="flex flex-col">
-                  <dt className="text-xs text-muted-foreground">Endereço</dt>
-                  <dd className="text-sm text-foreground">
+                  <dt className="text-sm text-muted-foreground">Endereço</dt>
+                  <dd className="text-base text-foreground">
                     {user.address ?? '—'}
                     {user.cep ? ` · CEP ${formatCep(user.cep)}` : ''}
                   </dd>
                 </div>
               </div>
-              <div className="flex items-center gap-3 px-4 py-3">
-                <Mail className="size-4 shrink-0 text-muted-foreground" />
+              <div className="flex items-center gap-3 px-5 py-4">
+                <Mail className="size-5 shrink-0 text-muted-foreground" />
                 <div className="flex flex-col">
-                  <dt className="text-xs text-muted-foreground">E-mail</dt>
-                  <dd className="text-sm text-foreground">{user.email}</dd>
+                  <dt className="text-sm text-muted-foreground">E-mail</dt>
+                  <dd className="text-base text-foreground">{user.email}</dd>
                 </div>
               </div>
-              <div className="flex items-center gap-3 px-4 py-3">
-                <CalendarDays className="size-4 shrink-0 text-muted-foreground" />
+              <div className="flex items-center gap-3 px-5 py-4">
+                <CalendarDays className="size-5 shrink-0 text-muted-foreground" />
                 <div className="flex flex-col">
-                  <dt className="text-xs text-muted-foreground">Membro desde</dt>
-                  <dd className="text-sm text-foreground">{formatDate(user.created_at)}</dd>
+                  <dt className="text-sm text-muted-foreground">Membro desde</dt>
+                  <dd className="text-base text-foreground">{formatDate(user.created_at)}</dd>
                 </div>
               </div>
             </dl>

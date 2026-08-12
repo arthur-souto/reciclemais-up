@@ -7,7 +7,7 @@ import { AppSidebar, type AppSection } from '@/components/app/AppSidebar'
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
 import { useAuthContext } from '@/context/AuthContext'
 import { useLogout } from '@/hooks/useAuth'
-import { Footer } from './Footer'
+import { Footer } from './Footer';
 
 interface AppLayoutProps {
   title: string
@@ -31,12 +31,12 @@ export function AppLayout({ title, section, onSectionChange, children }: AppLayo
         canManagePrizes={canManagePrizes}
       />
       <SidebarInset>
-        <header className="sticky top-0 z-10 flex items-center  justify-between gap-2 border-b border-border bg-background px-4 py-3 sm:px-6 sm:py-4">
-          <div className="flex min-w-0 items-center gap-2 sm:gap-3  ">
-            <SidebarTrigger />
-            <h1 className="truncate text-lg font-semibold text-foreground">{title}</h1>
+        <header className="sticky top-0 z-10 flex items-center justify-between gap-2 border-b border-border bg-background/95 px-4 py-3.5 backdrop-blur supports-backdrop-filter:bg-background/80 sm:px-6 sm:py-5">
+          <div className="flex min-w-0 items-center gap-2 sm:gap-3">
+            <SidebarTrigger className="size-9 sm:size-10 [&_svg]:size-5" />
+            <h1 className="truncate font-heading text-lg font-semibold text-foreground sm:text-xl">{title}</h1>
           </div>
-          <div className="flex shrink-0 items-center gap-1 sm:gap-3">
+          <div className="flex shrink-0 items-center gap-1.5 sm:gap-3">
             <UserMenu />
             <ThemeToggle />
             <Button variant="ghost" size="sm" onClick={logout}>
@@ -47,8 +47,7 @@ export function AppLayout({ title, section, onSectionChange, children }: AppLayo
         </header>
 
         {children}
-{/**    <Footer/> */}
-     
+        <Footer/>
       </SidebarInset>
     </SidebarProvider>
   )

@@ -87,24 +87,26 @@ export function RecyclingCentersSection() {
   }, [location])
 
   return (
-    <section className="w-full px-6 pt-8 pb-10 sm:px-8 lg:px-12">
-      <div className="flex flex-wrap items-center justify-between gap-2">
-        <div className="flex items-center gap-2">
-          <MapPinned className="size-5 text-primary" />
-          <h2 className="text-xl font-semibold text-foreground">Pontos de coleta perto de você</h2>
+    <section className="w-full">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <div className="flex items-center gap-2">
+            <MapPinned className="size-6 text-primary" />
+            <h2 className="text-xl font-bold text-foreground sm:text-2xl">Pontos de coleta perto de você</h2>
+          </div>
+          <p className="mt-1 text-sm text-muted-foreground sm:text-base">
+            Encontramos ecopontos e centros de reciclagem próximos usando sua localização.
+          </p>
         </div>
-      <p className="mt-1 text-sm text-muted-foreground">
-        Encontramos ecopontos e centros de reciclagem próximos usando sua localização.
-      </p>
-  {location.status === 'ready' && !isLoadingCenters && !errorMessage && centers != null && centers.length > 0 && (
-          <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
+
+        {location.status === 'ready' && !isLoadingCenters && !errorMessage && centers != null && centers.length > 0 && (
+          <span className="shrink-0 rounded-full bg-primary/10 px-3.5 py-1.5 text-sm font-semibold text-primary">
             {centers.length} {centers.length === 1 ? 'ponto encontrado' : 'pontos encontrados'}
           </span>
         )}
       </div>
 
-     
-       <div className="mt-4">
+       <div className="mt-5">
         {(location.status === 'idle' || location.status === 'locating') && (
           <Skeleton className="h-80 w-full rounded-2xl sm:h-96" />
         )}
@@ -121,8 +123,8 @@ export function RecyclingCentersSection() {
           />
         )}
         {location.status === 'denied' && (
-          <div className="mt-3 flex justify-center">
-            <Button variant="outline" size="sm" onClick={requestLocation}>
+          <div className="mt-4 flex justify-center">
+            <Button variant="outline" size="lg" onClick={requestLocation}>
               <Locate />
               Tentar novamente
             </Button>
@@ -143,43 +145,22 @@ export function RecyclingCentersSection() {
 
             {!isLoadingCenters && !errorMessage && centers != null && (
               <>
-              <div className="relative overflow-hidden rounded-2xl border border-border/60">
-  <RecyclingCentersMap
-    userLocation={{ lat: location.lat, lon: location.lon }}
-    centers={centers}
-    focusedCenterId={focusedCenterId}
-  />
+              <div className="relative overflow-hidden rounded-2xl border border-border/60 shadow-sm">
+                <RecyclingCentersMap
+                  userLocation={{ lat: location.lat, lon: location.lon }}
+                  centers={centers}
+                  focusedCenterId={focusedCenterId}
+                />
 
-  <button
-    type="button"
-    onClick={requestLocation}
-    aria-label="Usar minha localização"
-    className="
-      absolute
-      bottom-4
-      right-4
-      z-10
-      flex
-      size-11
-      items-center
-      justify-center
-      rounded-full
-      border
-      border-border/60
-      bg-card/95
-      text-foreground
-      shadow-lg
-      backdrop-blur-sm
-      transition-all
-      hover:scale-105
-      hover:bg-primary
-      hover:text-primary-foreground
-      active:scale-95
-    "
-  >
-    <Navigation className="size-[18px]" />
-  </button>
-</div>
+                <button
+                  type="button"
+                  onClick={requestLocation}
+                  aria-label="Usar minha localização"
+                  className="absolute bottom-4 right-4 z-10 flex size-12 items-center justify-center rounded-full border border-border/60 bg-card/95 text-foreground shadow-lg backdrop-blur-sm transition-all hover:scale-105 hover:bg-primary hover:text-primary-foreground active:scale-95"
+                >
+                  <Navigation className="size-5" />
+                </button>
+              </div>
 
                 {centers.length === 0 ? (
                   <EmptyState
@@ -188,24 +169,24 @@ export function RecyclingCentersSection() {
                     className="mt-4 rounded-2xl border border-dashed border-border"
                   />
                 ) : (
-                     <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                     <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                     {centers.map((center) => (
                       <button
                         key={center.id}
                         type="button"
                         onClick={() => setFocusedCenterId(center.id)}
                         aria-pressed={focusedCenterId === center.id}
-                        className={`flex flex-col gap-1 rounded-xl border bg-card p-3 text-left transition-all hover:border-primary/50 hover:bg-accent hover:shadow-sm ${
+                        className={`flex flex-col gap-2 rounded-2xl border bg-card p-4 text-left shadow-sm transition-all hover:border-primary/50 hover:bg-accent hover:shadow-md ${
                           focusedCenterId === center.id ? 'border-primary ring-1 ring-primary/30' : 'border-border'
                         }`}
                       >
-                        <div className="flex items-start gap-2">
-                          <span className="mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-full bg-primary/10">
-                            <Recycle className="size-3.5 text-primary" />
+                        <div className="flex items-start gap-3">
+                          <span className="mt-0.5 flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary/10">
+                            <Recycle className="size-5 text-primary" />
                           </span>
                           <div className="flex min-w-0 flex-col">
-                            <span className="truncate text-sm font-medium text-foreground">{center.name}</span>
-                            <span className="truncate text-xs text-muted-foreground">
+                            <span className="truncate text-base font-semibold text-foreground">{center.name}</span>
+                            <span className="truncate text-sm text-muted-foreground">
                               {center.address ?? 'Endereço não informado'}
                             </span>
                           </div>
@@ -215,11 +196,11 @@ export function RecyclingCentersSection() {
                           target="_blank"
                           rel="noreferrer"
                           onClick={(event) => event.stopPropagation()}
-                          className="mt-1 inline-flex items-center gap-1 self-start text-xs font-medium text-primary hover:underline"
+                          className="mt-1 inline-flex items-center gap-1.5 self-start text-sm font-medium text-primary hover:underline"
                         >
-                          <Navigation className="size-3" />
+                          <Navigation className="size-3.5" />
                           Como chegar
-                          <ExternalLink className="size-3" />
+                          <ExternalLink className="size-3.5" />
                         </a>
                       </button>
                     ))}

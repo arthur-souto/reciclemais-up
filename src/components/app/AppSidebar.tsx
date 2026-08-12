@@ -44,26 +44,31 @@ export function AppSidebar({
   return (
     <Sidebar side="left">
       <SidebarHeader>
-        <div className="flex items-center gap-2 px-2 py-1.5">
-          <div className="flex size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-            <Recycle className="size-4" />
+        <div className="flex items-center gap-2.5 px-2 py-2.5">
+          <div className="flex size-9 items-center justify-center rounded-xl bg-sidebar-primary text-sidebar-primary-foreground">
+            <Recycle className="size-5" />
           </div>
-          <span className="text-sm font-semibold">Recicle+</span>
+          <span className="font-heading text-base font-semibold">Recicle+</span>
         </div>
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>Geral</SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenu>
+            <SidebarMenu className="gap-1">
               <SidebarMenuItem>
-                <SidebarMenuButton isActive={isHome && section === 'home'} onClick={() => handleSectionChange('home')}>
+                <SidebarMenuButton
+                  size="lg"
+                  isActive={isHome && section === 'home'}
+                  onClick={() => handleSectionChange('home')}
+                  className="text-[15px] [&_svg]:size-5"
+                >
                   <HomeIcon />
                   <span>Início</span>
                 </SidebarMenuButton>
               </SidebarMenuItem>
               <SidebarMenuItem>
-                <SidebarMenuButton asChild isActive={location.pathname === '/pontos-de-coleta'}>
+                <SidebarMenuButton asChild size="lg" isActive={location.pathname === '/pontos-de-coleta'} className="text-[15px] [&_svg]:size-5">
                   <Link to="/pontos-de-coleta" onClick={closeMobileSidebar}>
                     <MapPin />
                     <span>Pontos de coleta</span>
@@ -71,7 +76,7 @@ export function AppSidebar({
                 </SidebarMenuButton>
               </SidebarMenuItem>
               <SidebarMenuItem>
-                <SidebarMenuButton asChild isActive={location.pathname === '/profile'}>
+                <SidebarMenuButton asChild size="lg" isActive={location.pathname === '/profile'} className="text-[15px] [&_svg]:size-5">
                   <Link to="/profile" onClick={closeMobileSidebar}>
                     <UserRound />
                     <span>Meu perfil</span>
@@ -79,7 +84,7 @@ export function AppSidebar({
                 </SidebarMenuButton>
               </SidebarMenuItem>
               <SidebarMenuItem>
-                <SidebarMenuButton asChild isActive={location.pathname === '/premios'}>
+                <SidebarMenuButton asChild size="lg" isActive={location.pathname === '/premios'} className="text-[15px] [&_svg]:size-5">
                   <Link to="/premios" onClick={closeMobileSidebar}>
                     <Gift />
                     <span>Loja de prêmios</span>
@@ -94,12 +99,14 @@ export function AppSidebar({
           <SidebarGroup>
             <SidebarGroupLabel>Administração</SidebarGroupLabel>
             <SidebarGroupContent>
-              <SidebarMenu>
+              <SidebarMenu className="gap-1">
                 {canManageMaterials && (
                   <SidebarMenuItem>
                     <SidebarMenuButton
+                      size="lg"
                       isActive={isHome && section === 'overview'}
                       onClick={() => handleSectionChange('overview')}
+                      className="text-[15px] [&_svg]:size-5"
                     >
                       <LayoutDashboard />
                       <span>Visão geral</span>
@@ -109,8 +116,10 @@ export function AppSidebar({
                 {canManageMaterials && (
                   <SidebarMenuItem>
                     <SidebarMenuButton
+                      size="lg"
                       isActive={isHome && section === 'materials'}
                       onClick={() => handleSectionChange('materials')}
+                      className="text-[15px] [&_svg]:size-5"
                     >
                       <Package />
                       <span>Materiais</span>
@@ -120,8 +129,10 @@ export function AppSidebar({
                 {canManagePrizes && (
                   <SidebarMenuItem>
                     <SidebarMenuButton
+                      size="lg"
                       isActive={isHome && section === 'prizes'}
                       onClick={() => handleSectionChange('prizes')}
+                      className="text-[15px] [&_svg]:size-5"
                     >
                       <Gift />
                       <span>Prêmios</span>

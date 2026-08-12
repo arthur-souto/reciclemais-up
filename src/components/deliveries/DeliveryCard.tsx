@@ -28,76 +28,75 @@ export function DeliveryCard({ delivery, onUploadEvidence, onOpenDetails }: Deli
           onOpenDetails(delivery)
         }
       }}
-      className="flex cursor-pointer flex-col overflow-hidden rounded-xl border border-border bg-card text-left shadow-sm transition-shadow hover:shadow-md"
+      className="group flex cursor-pointer flex-col overflow-hidden rounded-2xl border border-border bg-card text-left shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
     >
-      <div className="relative flex aspect-square w-full shrink-0 items-center justify-center bg-muted">
+      <div className="relative flex aspect-square w-full shrink-0 items-center justify-center overflow-hidden bg-muted">
         {hasValidImage ? (
           <img
             src={delivery.evidence_url ?? undefined}
             alt={`Evidência da entrega de ${materialName}`}
-            className="size-full object-cover"
+            className="size-full object-cover transition-transform duration-300 group-hover:scale-105"
             onError={() => setImageFailed(true)}
           />
         ) : (
-          <Recycle className="size-12 text-muted-foreground/40" />
+          <Recycle className="size-14 text-muted-foreground/40" />
         )}
-        <DeliveryStatusBadge status={delivery.status} className="absolute top-2 right-2" />
+        <DeliveryStatusBadge status={delivery.status} className="absolute top-2.5 right-2.5" />
+        <span className="absolute top-2.5 left-2.5 inline-flex items-center gap-1 rounded-full bg-amber-500 px-2.5 py-1 text-xs font-bold text-white shadow-sm">
+          <Trophy className="size-3.5" />
+          {delivery.total_score} pts
+        </span>
       </div>
 
-      <div className="flex flex-col gap-1.5 p-3">
-        <p className="truncate text-sm font-medium text-foreground" title={materialName}>
+      <div className="flex flex-col gap-2 p-4">
+        <p className="truncate text-lg font-semibold text-foreground" title={materialName}>
           {materialName}
         </p>
 
         {delivery.material && (
-          <div className="flex flex-wrap items-center gap-1">
+          <div className="flex flex-wrap items-center gap-1.5">
             <ImportanceBadge importance={delivery.material.importance} />
-            <span className="inline-flex items-center gap-1 rounded-full bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground">
+            <span className="inline-flex items-center gap-1 rounded-full bg-muted px-2.5 py-1 text-xs font-medium text-muted-foreground">
               <Coins className="size-3" />
               {delivery.material.points_value} pts/un.
             </span>
           </div>
         )}
 
-        <div className="flex items-center gap-1 text-xs font-semibold text-foreground">
-          <Trophy className="size-3.5 shrink-0 text-amber-500" />
-          {delivery.total_score} pts
-        </div>
-
-        <div className="flex items-center gap-1 text-xs text-muted-foreground">
-          <MapPin className="size-3.5 shrink-0" />
+        <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
+          <MapPin className="size-4 shrink-0" />
           <span className="truncate" title={delivery.local}>
             {delivery.local}
           </span>
         </div>
 
-        <div className="flex items-center gap-1 text-xs text-muted-foreground">
-          <Weight className="size-3.5 shrink-0" />
+        <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
+          <Weight className="size-4 shrink-0" />
           <span>
             {delivery.quantity} un. · {delivery.weight} kg
           </span>
         </div>
 
-        <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[10px] text-muted-foreground/80">
+        <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-xs text-muted-foreground/80">
           <span
-            className="inline-flex items-center gap-0.5"
+            className="inline-flex items-center gap-1"
             title={`Registrada em ${formatDateTime(delivery.created_at)}`}
           >
-            <CalendarDays className="size-3 shrink-0" />
+            <CalendarDays className="size-3.5 shrink-0" />
             {formatShortDate(delivery.created_at)}
           </span>
           <span
-            className="inline-flex items-center gap-0.5"
+            className="inline-flex items-center gap-1"
             title={`Atualizada em ${formatDateTime(delivery.updated_at)}`}
           >
-            <RefreshCw className="size-3 shrink-0" />
+            <RefreshCw className="size-3.5 shrink-0" />
             {formatShortDate(delivery.updated_at)}
           </span>
           <span
-            className="inline-flex items-center gap-0.5"
+            className="inline-flex items-center gap-1"
             title={`Recolhida em ${formatDateTime(delivery.collected_at)}`}
           >
-            <PackageCheck className="size-3 shrink-0" />
+            <PackageCheck className="size-3.5 shrink-0" />
             {formatShortDate(delivery.collected_at)}
           </span>
         </div>
@@ -105,7 +104,7 @@ export function DeliveryCard({ delivery, onUploadEvidence, onOpenDetails }: Deli
         {delivery.status === 'PENDING' && (
           <Button
             size="sm"
-            className="mt-1"
+            className="mt-1.5"
             onClick={(event) => {
               event.stopPropagation()
               onUploadEvidence(delivery)

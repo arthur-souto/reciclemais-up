@@ -21,7 +21,7 @@ export function PrizeCard({ prize, currentScore, onRedeem, isRedeeming }: PrizeC
   const canRedeem = hasEnoughPoints && !isExpired && !isOutOfStock
 
   return (
-    <div className="flex flex-col overflow-hidden rounded-xl border border-border bg-card shadow-sm">
+    <div className="flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-shadow hover:shadow-md">
       <div className="relative flex aspect-square items-center justify-center bg-muted">
         {hasValidImage ? (
           <img
@@ -31,45 +31,45 @@ export function PrizeCard({ prize, currentScore, onRedeem, isRedeeming }: PrizeC
             onError={() => setImageFailed(true)}
           />
         ) : (
-          <Gift className="size-12 text-muted-foreground/40" />
+          <Gift className="size-14 text-muted-foreground/40" />
         )}
       </div>
 
-      <div className="flex flex-1 flex-col gap-1.5 p-3">
-        <p className="truncate text-sm font-medium text-foreground" title={prize.name}>
+      <div className="flex flex-1 flex-col gap-2 p-4">
+        <p className="truncate text-base font-semibold text-foreground" title={prize.name}>
           {prize.name}
         </p>
 
-        <p className="line-clamp-2 text-xs text-muted-foreground">{prize.description}</p>
+        <p className="line-clamp-2 text-sm text-muted-foreground">{prize.description}</p>
 
-        <div className="flex flex-wrap items-center gap-1">
+        <div className="flex flex-wrap items-center gap-1.5">
           <PrizeTypeBadge type={prize.type} />
-          <span className="inline-flex items-center gap-1 rounded-full bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground">
+          <span className="inline-flex items-center gap-1 rounded-full bg-muted px-2.5 py-1 text-xs font-medium text-muted-foreground">
             {prize.category ?? 'Sem categoria'}
           </span>
         </div>
 
-        <div className="flex items-center gap-1 text-xs font-semibold text-foreground">
-          <Coins className="size-3.5 shrink-0 text-amber-500" />
+        <div className="flex items-center gap-1.5 text-sm font-semibold text-foreground">
+          <Coins className="size-4 shrink-0 text-amber-500" />
           {prize.required_points} pts
         </div>
 
         {prize.type === 'PHYSICAL' && prize.quantity != null && (
-          <div className={`text-xs ${isOutOfStock ? 'font-medium text-destructive' : 'text-muted-foreground'}`}>
+          <div className={`text-sm ${isOutOfStock ? 'font-medium text-destructive' : 'text-muted-foreground'}`}>
             {isOutOfStock ? 'Esgotado' : `${prize.quantity} disponíveis`}
           </div>
         )}
 
         {prize.expiration_date && (
-          <div className="flex items-center gap-1 text-xs text-muted-foreground">
-            <Hourglass className="size-3.5 shrink-0" />
+          <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
+            <Hourglass className="size-4 shrink-0" />
             {isExpired ? 'Expirado em' : 'Válido até'} {formatShortDate(prize.expiration_date)}
           </div>
         )}
 
         <Button
           size="sm"
-          className="mt-1"
+          className="mt-1.5"
           disabled={!canRedeem}
           loading={isRedeeming}
           onClick={() => onRedeem(prize)}
