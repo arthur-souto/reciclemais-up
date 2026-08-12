@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { AxiosError } from 'axios'
 import { toast } from 'sonner'
 import { Gift, History, Wallet } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -21,10 +22,18 @@ import { useMyRedemptions, useRedeemPrize } from '@/hooks/usePrizeRedemptions'
 import { useUser } from '@/hooks/useUsers'
 import { useAuthContext } from '@/context/AuthContext'
 import { formatDateTime } from '@/lib/date'
+import type { ApiErrorResponse } from '@/types/api'
 import type { Prize } from '@/types/prize'
 
 const CATALOG_PAGE_SIZE = 50
 const REDEMPTIONS_PAGE_SIZE = 10
+
+function isRedeemErrorRequiringRefetch(error: unknown) {
+  if (!(error instanceof AxiosError) || !error.response) return false
+  if (error.response.status === 404) return true
+  const message = (error.response.data as ApiErrorResponse | undefined)?.error ?? ''
+  return message.includes('esgotado') || message.includes('já resgatado')
+}
 
 function RedemptionsHistoryDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (open: boolean) => void }) {
   const [page, setPage] = useState(1)
@@ -102,7 +111,12 @@ export function PrizeCatalog() {
 
     redeemPrize.mutate(prize.id, {
       onSuccess: () => toast.success('Prêmio resgatado com sucesso!'),
-      onError: (error) => toast.error(getApiErrorMessage(error, 'Não foi possível resgatar o prêmio.')),
+      onError: (error) => {
+        toast.error(getApiErrorMessage(error, 'Não foi possível resgatar o prêmio.'))
+        if (isRedeemErrorRequiringRefetch(error)) {
+          refetchPrizes()
+        }
+      },
     })
   }
 

@@ -19,8 +19,15 @@ const selectClassName = cn(
 const prizeSchema = z.object({
   name: z.string().min(1, 'Informe o nome do prêmio').max(255, 'Nome muito longo'),
   required_points: z.coerce.number('Informe um número').int('Deve ser um número inteiro').min(1, 'Mínimo 1'),
+  quantity: z.union([
+    z.literal(''),
+    z.coerce.number('Informe um número').int('Deve ser um número inteiro').min(0, 'Mínimo 0'),
+  ]).optional(),
   description: z.string().min(1, 'Informe a descrição'),
   category: z.string().optional(),
+  type: z.union([z.literal('PHYSICAL'), z.literal('DIGITAL'), z.literal('DISCOUNT')], {
+    error: 'Selecione o tipo do prêmio',
+  }),
   image_url: z.union([z.literal(''), z.string().url('Informe uma URL válida')]).optional(),
   expiration_date: z.string().optional(),
   status: z.union([z.literal('ACTIVE'), z.literal('INACTIVE')]).optional(),
@@ -47,20 +54,24 @@ export function PrizeForm({ prize, onSaved }: PrizeFormProps) {
     register,
     handleSubmit,
     control,
+    watch,
     formState: { errors },
   } = useForm<PrizeFormInput, unknown, PrizeFormOutput>({
     resolver: zodResolver(prizeSchema),
     defaultValues: {
       name: prize?.name ?? '',
       required_points: prize?.required_points ?? 0,
+      quantity: prize?.quantity ?? '',
       description: prize?.description ?? '',
       category: prize?.category ?? '',
+      type: prize?.type ?? 'PHYSICAL',
       image_url: prize?.image_url ?? '',
       expiration_date: toDateInputValue(prize?.expiration_date ?? null),
       status: prize?.status ?? 'ACTIVE',
     },
   })
 
+  const type = watch('type')
   const isPending = createPrize.isPending || updatePrize.isPending
 
   function onSubmit(values: PrizeFormOutput) {
@@ -68,14 +79,17 @@ export function PrizeForm({ prize, onSaved }: PrizeFormProps) {
     const expiration_date = values.expiration_date
       ? new Date(values.expiration_date).toISOString()
       : undefined
+    const quantity = values.quantity === '' || values.quantity == null ? undefined : values.quantity
 
     if (isEditing) {
       updatePrize.mutate(
         {
           name: values.name,
           required_points: values.required_points,
+          quantity,
           description: values.description,
           category: values.category?.trim() || undefined,
+          type: values.type,
           image_url,
           expiration_date,
           status: values.status,
@@ -96,8 +110,10 @@ export function PrizeForm({ prize, onSaved }: PrizeFormProps) {
       {
         name: values.name,
         required_points: values.required_points,
+        quantity,
         description: values.description,
         category: values.category?.trim() || null,
+        type: values.type,
         image_url,
         expiration_date,
       },
@@ -157,6 +173,36 @@ export function PrizeForm({ prize, onSaved }: PrizeFormProps) {
           <Label htmlFor="category">Categoria</Label>
           <Input id="category" placeholder="Opcional" {...register('category')} />
         </div>
+      </div>
+
+      <div className="grid grid-cols-2 gap-3">
+        <div className="flex flex-col gap-1.5">
+          <Label htmlFor="type">Tipo</Label>
+          <select id="type" className={selectClassName} aria-invalid={!!errors.type} {...register('type')}>
+            <option value="PHYSICAL">Físico</option>
+            <option value="DIGITAL">Digital</option>
+            <option value="DISCOUNT">Desconto</option>
+          </select>
+          {errors.type && <span className="text-xs text-destructive">{errors.type.message}</span>}
+        </div>
+
+        {type === 'PHYSICAL' && (
+          <div className="flex flex-col gap-1.5">
+            <Label htmlFor="quantity">Estoque</Label>
+            <Input
+              id="quantity"
+              type="number"
+              min={0}
+              step={1}
+              placeholder="Sem controle de estoque"
+              aria-invalid={!!errors.quantity}
+              {...register('quantity')}
+            />
+            {errors.quantity && (
+              <span className="text-xs text-destructive">{errors.quantity.message}</span>
+            )}
+          </div>
+        )}
       </div>
 
       <div className="flex flex-col gap-1.5">

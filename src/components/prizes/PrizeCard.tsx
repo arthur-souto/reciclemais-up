@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Coins, Gift, Hourglass } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { PrizeTypeBadge } from '@/components/prizes/PrizeTypeBadge'
 import { formatShortDate } from '@/lib/date'
 import type { Prize } from '@/types/prize'
 
@@ -16,7 +17,8 @@ export function PrizeCard({ prize, currentScore, onRedeem, isRedeeming }: PrizeC
   const hasValidImage = !!prize.image_url && !imageFailed
   const isExpired = prize.expiration_date != null && new Date(prize.expiration_date) < new Date()
   const hasEnoughPoints = currentScore != null && currentScore >= prize.required_points
-  const canRedeem = hasEnoughPoints && !isExpired
+  const isOutOfStock = prize.type === 'PHYSICAL' && prize.quantity === 0
+  const canRedeem = hasEnoughPoints && !isExpired && !isOutOfStock
 
   return (
     <div className="flex flex-col overflow-hidden rounded-xl border border-border bg-card shadow-sm">
@@ -41,6 +43,7 @@ export function PrizeCard({ prize, currentScore, onRedeem, isRedeeming }: PrizeC
         <p className="line-clamp-2 text-xs text-muted-foreground">{prize.description}</p>
 
         <div className="flex flex-wrap items-center gap-1">
+          <PrizeTypeBadge type={prize.type} />
           <span className="inline-flex items-center gap-1 rounded-full bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground">
             {prize.category ?? 'Sem categoria'}
           </span>
@@ -50,6 +53,12 @@ export function PrizeCard({ prize, currentScore, onRedeem, isRedeeming }: PrizeC
           <Coins className="size-3.5 shrink-0 text-amber-500" />
           {prize.required_points} pts
         </div>
+
+        {prize.type === 'PHYSICAL' && prize.quantity != null && (
+          <div className={`text-xs ${isOutOfStock ? 'font-medium text-destructive' : 'text-muted-foreground'}`}>
+            {isOutOfStock ? 'Esgotado' : `${prize.quantity} disponíveis`}
+          </div>
+        )}
 
         {prize.expiration_date && (
           <div className="flex items-center gap-1 text-xs text-muted-foreground">
@@ -66,7 +75,7 @@ export function PrizeCard({ prize, currentScore, onRedeem, isRedeeming }: PrizeC
           onClick={() => onRedeem(prize)}
         >
           <Gift />
-          Resgatar
+          {isOutOfStock ? 'Esgotado' : 'Resgatar'}
         </Button>
       </div>
     </div>

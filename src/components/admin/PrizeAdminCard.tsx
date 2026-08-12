@@ -3,6 +3,7 @@ import { Coins, Gift, Pencil, Trash2, Users } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { PrizeStatusBadge } from '@/components/admin/PrizeStatusBadge'
+import { PrizeTypeBadge } from '@/components/prizes/PrizeTypeBadge'
 import { useUser } from '@/hooks/useUsers'
 import type { Prize } from '@/types/prize'
 
@@ -53,6 +54,7 @@ export function PrizeAdminCard({ prize, onEdit, onDelete, onViewRedemptions }: P
         </p>
 
         <div className="flex flex-wrap items-center gap-1">
+          <PrizeTypeBadge type={prize.type} />
           <span className="inline-flex items-center gap-1 rounded-full bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground">
             {prize.category ?? 'Sem categoria'}
           </span>
@@ -62,6 +64,16 @@ export function PrizeAdminCard({ prize, onEdit, onDelete, onViewRedemptions }: P
           <Coins className="size-3.5 shrink-0 text-amber-500" />
           {prize.required_points} pts
         </div>
+
+        {prize.type === 'PHYSICAL' && (
+          <div className="text-xs text-muted-foreground">
+            {prize.quantity == null
+              ? 'Estoque ilimitado'
+              : prize.quantity === 0
+                ? <span className="font-medium text-destructive">Esgotado</span>
+                : `${prize.quantity} em estoque`}
+          </div>
+        )}
 
         <div className="text-xs text-muted-foreground">
           Criado por <PrizeCreator userId={prize.fk_created_by} />
