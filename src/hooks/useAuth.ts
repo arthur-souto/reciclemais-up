@@ -1,6 +1,7 @@
 import { useMutation } from '@tanstack/react-query'
 import { login } from '@/api/auth.api'
 import { getUserById } from '@/api/user.api'
+import { socialLogIn } from '@/api/socialAuth.api'
 import type { LoginPayload } from '@/types/auth'
 import { useAuthContext } from '@/context/AuthContext'
 import { decodeJwt } from '@/lib/jwt'
@@ -25,6 +26,13 @@ export function useLogin() {
           throw new Error('Não foi possível identificar o usuário autenticado.')
         }
         const user = await getUserById(claims.sub)
+        try {
+          // Garante o snapshot local do usuário no serviço social (posts/mídia).
+          // Best-effort: se o serviço social estiver fora do ar, não deve travar o login.
+          await socialLogIn()
+        } catch (error) {
+          console.error('[social-api] Falha ao criar/recuperar snapshot do usuário', error)
+        }
         return { accessToken, user }
       } catch (error) {
         localStorage.removeItem('accessToken')

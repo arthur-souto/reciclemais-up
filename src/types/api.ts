@@ -33,3 +33,23 @@ export interface ApiMutationResponse<T> {
 export interface ApiMessageResponse {
   description: string
 }
+
+// Erro default do serviço social (Spring Boot), diferente do ApiErrorResponse da bff-web.
+export interface SocialApiErrorResponse {
+  timestamp: string
+  status: number
+  error: string
+  message: string
+  path: string
+}
+
+// Paginação padrão do Spring Data (PagedModel), usada pelo serviço social.
+export interface SpringPage<T> {
+  content: T[]
+  page: {
+    size: number
+    number: number
+    totalElements: number
+    totalPages: number
+  }
+}

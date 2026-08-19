@@ -2,6 +2,7 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 import Login from '@/pages/Login'
 import Register from '@/pages/Register'
 import Home from '@/pages/Home'
+import Feed from '@/pages/Feed'
 import Profile from '@/pages/Profile'
 import Locations from '@/pages/Locations'
 import PrizesCatalogPage from '@/pages/PrizesCatalogPage'
@@ -32,6 +33,14 @@ function App() {
         element={
           <ProtectedRoute>
             <Home />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/feed"
+        element={
+          <ProtectedRoute>
+            <Feed />
           </ProtectedRoute>
         }
       />

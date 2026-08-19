@@ -1,8 +1,9 @@
 import axios, { AxiosError } from 'axios'
+import { resolveApiUrl } from '@/lib/apiUrl'
 import type { ApiErrorResponse } from '@/types/api'
 
 export const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL,
+  baseURL: resolveApiUrl(import.meta.env.VITE_API_URL),
   timeout: 10_000,
 })
 

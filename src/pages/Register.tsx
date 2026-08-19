@@ -36,7 +36,10 @@ export default function Register() {
   const navigate = useNavigate()
   const createUser = useCreateUser()
   // Seed estável pro avatar sugerido enquanto a pessoa preenche o formulário.
-  const [avatarSeed] = useState(() => crypto.randomUUID())
+  // crypto.randomUUID só existe em contexto seguro (HTTPS ou localhost); em
+  // LAN via HTTP (ex.: acessando pelo IP da rede) ele não existe, então não
+  // dá pra depender dele aqui — é só uma seed local, não precisa ser criptográfica.
+  const [avatarSeed] = useState(() => `${Date.now()}-${Math.random().toString(36).slice(2)}`)
 
   const {
     register,

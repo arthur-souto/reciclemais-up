@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom'
-import { Gift, Home as HomeIcon, LayoutDashboard, MapPin, Package, Recycle, UserRound } from 'lucide-react'
+import { Gift, Home as HomeIcon, LayoutDashboard, MapPin, Package, Recycle, Rss, UserRound } from 'lucide-react'
 import {
   Sidebar,
   SidebarContent,
@@ -65,6 +65,14 @@ export function AppSidebar({
                 >
                   <HomeIcon />
                   <span>Início</span>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild size="lg" isActive={location.pathname === '/feed'} className="text-[15px] [&_svg]:size-5">
+                  <Link to="/feed" onClick={closeMobileSidebar}>
+                    <Rss />
+                    <span>Feed</span>
+                  </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
               <SidebarMenuItem>
